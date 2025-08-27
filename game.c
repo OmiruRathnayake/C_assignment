@@ -2,22 +2,35 @@
 
 #define MAX_WIDTH 9
 #define MAX_LENGTH 24
-#define NORTH (-1)			//width + north = w - 1    ///after direction dice///
-#define EAST 1				//length + east = l + 1
-#define SOUTH 1				//width + south = w + 1
-#define WEST (-1)			//length + west = l - 1
+
+//#define NORTH (-1)			//width + NORTH = w - 1    ///after throwing direction dice///
+//#define EAST 1				//length + EAST = l + 1
+//#define SOUTH 1				//width + SOUTH = w + 1
+//#define WEST (-1)				//length + WEST = l - 1
 
 const int A_START[]= {0,6,12};
 const int B_START[]= {0,9,8};
 const int C_START[]= {0,9,16};
 
 
+//difining directions as datatypes.
+typedef enum Directions
+{
+	NORTH = (-1),	//width + NORTH = w - 1 
+	EAST = (1), 	//length + EAST = l + 1
+	SOUTH = (1), 	//width + SOUTH = w + 1
+	WEST = (-1)		//length + WEST = l - 1
+}drctns;
+
+
+//block architecture.
 struct Cell
 {
 	int floor,width,length;	//cells(blocks)
 };
 
 
+//player postions.
 typedef struct PlayerStartPositions
 {
 	int A[3];
@@ -30,6 +43,7 @@ typedef struct PlayerStartPositions
 void Floor1(int max_width, int max_length)
 {
 	printf("floor1 width=%d,length=%d\n", max_width, max_length);
+	/*code*/
 }
 
 //Logics of 1st floor.
