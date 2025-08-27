@@ -8,9 +8,9 @@
 //#define SOUTH 1				//width + SOUTH = w + 1
 //#define WEST (-1)				//length + WEST = l - 1
 
-const int A_START[]= {0,6,12};
-const int B_START[]= {0,9,8};
-const int C_START[]= {0,9,16};
+const int A_START[3]= {0,6,12};
+const int B_START[3]= {0,9,8};
+const int C_START[3]= {0,9,16};
 
 
 //difining directions as datatypes.
