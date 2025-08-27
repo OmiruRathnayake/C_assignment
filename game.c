@@ -5,6 +5,16 @@
 #define C_START {0,9,16}
 #define MAX_WIDTH 9
 #define MAX_LENGTH 24
+#define north (-1)			//width + north = w - 1    ///after direction dice///
+#define east 1				//length + east = l + 1
+#define south 1				//width + south = w + 1
+#define west (-1)			//length + west = l - 1
+
+struct Cell
+{
+	int floor,width,length;	//cells(blocks)
+};
+
 
 typedef struct PlayerStartPositions
 {
@@ -14,28 +24,52 @@ typedef struct PlayerStartPositions
 }position;
 
 
-struct Cell
-{
-	int floor,width,length;	//cells(blocks)
-};
-
-
+//Logics of ground floor.
 void Floor1(int max_width, int max_length)
 {
 	printf("floor1 width=%d,length=%d\n", max_width, max_length);
 }
 
+//Logics of 1st floor.
 void Floor2(int max_width, int max_length)
 {
 	printf("floor2 width=%d,length=%d\n", max_width, max_length);
 	/*code*/
 }
 
-
+//Logics of 2nd floor.
 void Floor3(int max_width, int max_length)
 {
 	printf("floor3 width=%d,length=%d\n", max_width, max_length);
 	/*code*/
+}
+
+
+//Floor map 
+void displayFloor(int floor) {
+    switch (floor) {
+        case 0: // Floor 1 (Ground floor)
+            printf("FLOOR 1 (GROUND FLOOR)\n");
+            printf("Start positions:\n");
+            printf("A[0,6,12] -> (*a)\n");
+            printf("B[0,9,8]  -> (*b)\n");
+            printf("C[0,9,16] -> (*c)\n");
+            printf("Entrance to BAWANA (#)\n");
+            break;
+
+        case 1: // Floor 2
+            printf("FLOOR 2\n");
+            printf("Bridge across positions [7–17]\n");
+            break;
+
+        case 2: // Floor 3
+            printf("FLOOR 3\n");
+            printf("Similar layout to Floor 2 with bridge [7–17]\n");
+            break;
+
+        default:
+            printf("Invalid floor number! Use 0, 1, or 2.\n");
+    }
 }
 
 
@@ -50,6 +84,15 @@ int main()
 	Floor1(MAX_WIDTH,MAX_LENGTH);
 	Floor2(MAX_WIDTH,MAX_LENGTH);
 	Floor3(MAX_WIDTH,MAX_LENGTH);
+
+	
+	//displayFloor(){}		/*below should change according to player position*/
+	int floor_num;
+	printf("Enter floor number: ");
+	scanf("%d", &floor_num);
+
+	displayFloor(floor_num);
+	
 
 	return 0;
 }
