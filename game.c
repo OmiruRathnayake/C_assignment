@@ -2,10 +2,10 @@
 
 #define MAX_WIDTH 9
 #define MAX_LENGTH 24
-#define north (-1)			//width + north = w - 1    ///after direction dice///
-#define east 1				//length + east = l + 1
-#define south 1				//width + south = w + 1
-#define west (-1)			//length + west = l - 1
+#define NORTH (-1)			//width + north = w - 1    ///after direction dice///
+#define EAST 1				//length + east = l + 1
+#define SOUTH 1				//width + south = w + 1
+#define WEST (-1)			//length + west = l - 1
 
 const int A_START[]= {0,6,12};
 const int B_START[]= {0,9,8};
