@@ -20,7 +20,7 @@ typedef enum Directions
 	EAST = (1), 	//length + EAST = l + 1
 	SOUTH = (1), 	//width + SOUTH = w + 1
 	WEST = (-1)		//length + WEST = l - 1
-}drctns;
+}drctions;
 
 
 //block architecture.
@@ -28,15 +28,6 @@ struct Cell
 {
 	int floor,width,length;	//cells(blocks)
 };
-
-
-//player postions.
-typedef struct PlayerStartPositions
-{
-	int A[3];
-	int B[3];
-	int C[3];
-}position;
 
 
 //Logics of ground floor.
@@ -62,53 +53,43 @@ void Floor3(int max_width, int max_length)
 
 
 //Floor map 
-void displayFloor(int floor) {
-    switch (floor) {
-        case 0: // Floor 1 (Ground floor)
-            printf("FLOOR 1 (GROUND FLOOR)\n");
-            printf("Start positions:\n");
-            printf("A[0,6,12] -> (*a)\n");
-            printf("B[0,9,8]  -> (*b)\n");
-            printf("C[0,9,16] -> (*c)\n");
-            printf("Entrance to BAWANA (#)\n");
-            break;
+void displayFloor() {
+    
+	// Floor 1 (Ground floor)
+    printf("\n\t     FLOOR 1 (GROUND FLOOR)\n");
+	printf("\n. . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . a . . . . . . . . . . . .\n. . . . . . . .[][][][][A][][][][]. . . # # # # #\n. . . . . . . .[][][][][[][][][][]. . . # . . . .\n. . . . . . . .[][][][][[][][][][]. . . # . . . .\n. . . . . . . .[][][][][[][][][][]. . . # . . . .\n. . . . . . . b[B][][][][[][][][C]c . E # . . . .\n");
+    printf("Start positions:\n");
+    printf("\tA[0,6,12] -> (*a[0,5,12])\n");
+    printf("\tB[0,9,8]  -> (*b[0,9,7])\n");
+    printf("\tC[0,9,16] -> (*c[0,9,17])\n");
+    printf("Entrance to BAWANA-> (*E[0,9,19])\n");
 
-        case 1: // Floor 2
-            printf("FLOOR 2\n");
-            printf("Bridge across positions [7–17]\n");
-            break;
+	// Floor 2
+    printf("\n\n\t\t     FLOOR 2\n");
+	printf("\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .                  . . . . . . . .\n. . . . . . . .==================. . . . . . . .\n. . . . . . . .==================. . . . . . . .\n. . . . . . . .==================. . . . . . . .\n. . . . . . . .==================. . . . . . . .\n");
+    printf("Bridge(=) across positions [7-17]\n");
 
-        case 2: // Floor 3
-            printf("FLOOR 3\n");
-            printf("Similar layout to Floor 2 with bridge [7–17]\n");
-            break;
+	// Floor 3
+    printf("\n\n\t\t     FLOOR 3\n");
+	printf("\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n                . . . . . . . . .\n");
+    printf("Similar layout to Floor 2 with bridge [7-17]\n");
 
-        default:
-            printf("Invalid floor number! Use 0, 1, or 2.\n");
-    }
 }
 
 
 int main()
 {
-	position start = {A_START, B_START, C_START};
-
+	displayFloor();
+	
+	/*
 	for (int i = 0; i<3; i++){
-		printf("%d,", start.A[i]);
-	}
+		printf("%d", A_START[i]);
+		(i!=2) ? printf(",") : printf("\n");
+	}	
+	*/
 
-	Floor1(MAX_WIDTH,MAX_LENGTH);
-	Floor2(MAX_WIDTH,MAX_LENGTH);
-	Floor3(MAX_WIDTH,MAX_LENGTH);
-
+	drctions north = NORTH;
+	(north = -1) ? printf("north\n"):printf("?\n");
 	
-	//displayFloor(){}		/*below should change according to player position*/
-	int floor_num;
-	printf("Enter floor number: ");
-	scanf("%d", &floor_num);
-
-	displayFloor(floor_num);
-	
-
 	return 0;
 }
