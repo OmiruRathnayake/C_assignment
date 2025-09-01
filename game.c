@@ -36,31 +36,64 @@ typedef struct Palyer
 //Logics of ground floor.
 void Floor1(int floor, int width, int length, char Player_tag)
 {
-	//printf("floor1 width=%d,length=%d\n", max_width, max_length);
 	plyr P;
+
+	drctions north = NORTH;
+	drctions east = EAST;
+	drctions south = SOUTH;
+	drctions west = WEST;
+
+	int move,dir;
 	
 	if (Player_tag == 'A')
 	{
 		P.A[0] = floor;
-    	P.A[1] = width;
+    	P.A[1] = width + north;
     	P.A[2] = length;
-		printf("A = {%d,%d,%d}\n", floor, width, length);
+		printf("A = {%d,%d,%d}\n", P.A[0], P.A[1], P.A[2]);
+
+		FILE *move_A;
+		move_A = fopen("move_A.txt", "r");
+		if (move_A == NULL){
+			printf("Error opening file!");
+		}
+
+		while (fscanf(move_A, "%d,%d", &move, &dir) == 2)
+		{
+			printf("%d,%d\n", move, dir);
+		}
+
+		fclose(move_A);
+		
 	}
 
 	if (Player_tag == 'B')
 	{
 		P.B[0] = floor;
     	P.B[1] = width;
-    	P.B[2] = length;
-		printf("B = {%d,%d,%d}\n", floor, width, length);
+    	P.B[2] = length + west;
+		printf("B = {%d,%d,%d}\n", P.B[0], P.B[1], P.B[2]);
+
+		FILE *move_B;
+		move_B = fopen("move_B.txt", "r");
+		if (move_B == NULL){
+			printf("Error opening file!");
+		}
+
+		while (fscanf(move_B, "%d,%d", &move, &dir) == 2)
+		{
+			printf("%d,%d\n", move, dir);
+		}
+
+		fclose(move_B);
 	}
 	
 	if (Player_tag == 'C')
 	{
 		P.C[0] = floor;
     	P.C[1] = width;
-    	P.C[2] = length;
-		printf("C = {%d,%d,%d}\n", floor, width, length);
+    	P.C[2] = length + east;
+		printf("C = {%d,%d,%d}\n", P.C[0], P.C[1], P.C[2]);
 	}
 	
 	/*
@@ -133,7 +166,7 @@ int main()
 	printf("\n");
 
 	FILE *entr;
-	entr = fopen("test.txt", "r");
+	entr = fopen("enter.txt", "r");
 	if (entr == NULL)
 	{
 		printf("Error opening file!");
