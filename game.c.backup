@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "rand_utils.h"
 
 #define MAX_WIDTH 9
 #define MAX_LENGTH 24
@@ -37,7 +34,7 @@ typedef struct Palyer
 
 
 //Logics of ground floor.
-void Floor1(int floor, int width, int length, char Player_tag, int move)
+void Floor1(int floor, int width, int length, char Player_tag)
 {
 	plyr P;
 
@@ -46,7 +43,7 @@ void Floor1(int floor, int width, int length, char Player_tag, int move)
 	drctions south = SOUTH;
 	drctions west = WEST;
 
-	//int move,dir;
+	int move,dir;
 	
 	if (Player_tag == 'A')
 	{
@@ -54,9 +51,8 @@ void Floor1(int floor, int width, int length, char Player_tag, int move)
     	P.A[1] = width + north;
     	P.A[2] = length;
 		printf("A = {%d,%d,%d}\n", P.A[0], P.A[1], P.A[2]);
-		printf("A = {%d,%d,%d}\n", P.A[0], (P.A[1]+move), P.A[2]);
 
-		/*FILE *move_A;
+		FILE *move_A;
 		move_A = fopen("move_A.txt", "r");
 		if (move_A == NULL){
 			printf("Error opening file!");
@@ -67,7 +63,7 @@ void Floor1(int floor, int width, int length, char Player_tag, int move)
 			printf("%d,%d\n", move, dir);
 		}
 
-		fclose(move_A);*/
+		fclose(move_A);
 		
 	}
 
@@ -78,7 +74,7 @@ void Floor1(int floor, int width, int length, char Player_tag, int move)
     	P.B[2] = length + west;
 		printf("B = {%d,%d,%d}\n", P.B[0], P.B[1], P.B[2]);
 
-		/*FILE *move_B;
+		FILE *move_B;
 		move_B = fopen("move_B.txt", "r");
 		if (move_B == NULL){
 			printf("Error opening file!");
@@ -89,7 +85,7 @@ void Floor1(int floor, int width, int length, char Player_tag, int move)
 			printf("%d,%d\n", move, dir);
 		}
 
-		fclose(move_B);*/
+		fclose(move_B);
 	}
 	
 	if (Player_tag == 'C')
@@ -158,22 +154,6 @@ void displayFloor() {
 }
 
 
-//direction dice
-int directionDice()
-{
-	srand(time(NULL));
-	return rand_int_0_6();
-}
-
-
-//movement dice
-int movementDice()
-{
-	srand(time(NULL));
-	return rand_int_0_6();
-}
-
-
 int main()
 {
 	displayFloor();
@@ -185,7 +165,41 @@ int main()
 
 	printf("\n");
 
-	printf("%d\n", movementDice());
+	FILE *entr;
+	entr = fopen("enter.txt", "r");
+	if (entr == NULL)
+	{
+		printf("Error opening file!");
+	}
+
+	int A,B,C, A_entered=0, B_entered=0, C_entered=0;
+	
+	while (fscanf(entr, "%d,%d,%d", &A,&B,&C) == 3)
+	{
+		if (A == 6 && !A_entered)
+		{
+			printf("A has entered the game!\n");
+			Floor1(A_START[0], A_START[1], A_START[2], 'A');
+			A_entered = 1;
+		}
+		
+		if (B == 6 && !B_entered)
+		{
+			printf("B has entered the game!\n");
+			Floor1(B_START[0], B_START[1], B_START[2], 'B');
+			B_entered = 1;
+		}
+		
+		if (C == 6 && !C_entered)
+		{
+			printf("C has entered the game!\n");
+			Floor1(C_START[0], C_START[1], C_START[2], 'C');
+			C_entered = 1;
+		}
+	
+	}
+
+	fclose(entr);
 
 	return 0;
 }
