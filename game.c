@@ -357,6 +357,7 @@ void loadPlayers(Player **players){
 	(*players)[A].currentLength = A_START[2];
 	(*players)[A].isPlayerActive = false;
 	(*players)[A].throwCount = 0;
+	(*players)[A].score = STARTING_POINTS;
 
 	(*players)[B].direction = WEST;
 	(*players)[B].currentFloor = floor1;
@@ -364,6 +365,7 @@ void loadPlayers(Player **players){
 	(*players)[B].currentLength = B_START[2];
 	(*players)[B].isPlayerActive = false;
 	(*players)[B].throwCount = 0;
+	(*players)[B].score = STARTING_POINTS;
 
 	(*players)[C].direction = EAST;
 	(*players)[C].currentFloor = floor1;
@@ -371,6 +373,7 @@ void loadPlayers(Player **players){
 	(*players)[C].currentLength = C_START[2];
 	(*players)[C].isPlayerActive = false;
 	(*players)[C].throwCount = 0;
+	(*players)[C].score = STARTING_POINTS;
 
 	player_count = 3;
 

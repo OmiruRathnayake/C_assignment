@@ -80,6 +80,7 @@ typedef struct
 	int currentLength;
 	bool isPlayerActive;
 	int throwCount;
+	int score;
 }Player;
 
 
