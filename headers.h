@@ -51,6 +51,12 @@ typedef struct
 }Walls;
 
 
+//Seed
+typedef struct
+{
+	unsigned int seed;
+}Seed;
+
 //Player
 typedef struct
 {
@@ -63,10 +69,11 @@ typedef struct
 }Player;
 
 
-void loadStairs(Stairs *stairs);
-void loadPoles(Poles *poles);
-void loadWalls(Walls *walls);
+void loadStairs(Stairs **stairs);
+void loadPoles(Poles **poles);
+void loadWalls(Walls **walls);
 void loadPlayers(Player *players);
+int rand_int_0_6(void);
 int play();
 
 #endif

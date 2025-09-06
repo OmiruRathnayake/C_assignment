@@ -10,33 +10,74 @@
 #define MAX_PLAYERS 3
 #define STARTING_POINTS 100
 #define MOVEMENT_COST 2
+#define A 0
+#define B 1
+#define C 2
+#define GAMEOVER 0
 
-Stairs stairs;
-Poles poles;
-Walls walls;
+Stairs *stairs;
+Poles *poles;
+Walls *walls;
+Seed *seeds;
 Player players;
 
-//const int A_START[3]= {0,6,12};
-//const int B_START[3]= {0,9,8};
-//const int C_START[3]= {0,9,16};
+int seed_count;
+int player_count = 0;
+int currentPlayer = 0;
+int turn = 1;
+int throwCount = 0;
+
+//player movement points at the beginning
+int AXP = STARTING_POINTS;
+int BXP = STARTING_POINTS;
+int CXP = STARTING_POINTS;
+
+//player starting positions
+const int A_START[3]= {0,6,12};
+const int B_START[3]= {0,9,8};
+const int C_START[3]= {0,9,16};
+
+//Bawana walls
+const int bawanaWall1[5] = {0,6,20,6,24};
+const int bawanaWall2[5] = {0,6,20,9,20};
+int bawanaEntrance[3] = {0,9,19};
+
+//Ground floor
+int standAreaWidthStart = 6;
+int standAreaWidthEnd = 9;
+int standAreaLengthStart = 8;
+int standAreaLengthEnd = 16;
+
+//Floor1
+int f1DisabledWidthStart = 0;
+int f1DisabledWidthEnd = 5;
+int f1DisabledLengthStart = 8;
+int f1DisabledLengthEnd = 16;
+
+//Floor2
+int f2DisabledWidthStart = 0;		//floor 2 disabled width start
+int f2DisabledWidthEnd = 9;
+int f2DisabledLengthStart_1 = 0;
+int f2DisabledLengthEnd_1 = 7;
+int f2DisabledLengthStart_2 = 17;
+int f2DisabledLengthEnd_2 = 24;
+
 
 //Logics of ground floor.
-void Floor1(int floor, int width, int length, char Player_tag, int move)
+void Floor0()
 {
 	//
 }
 
 //Logics of 1st floor.
-void Floor2(int max_width, int max_length)
+void Floor1(/*f1DisabledWidthStart, f1DisabledWidthEnd, f1DisabledLengthStart, f1DisabledLengthEnd*/)
 {
-	printf("floor2 width=%d,length=%d\n", max_width, max_length);
 	/*code*/
 }
 
 //Logics of 2nd floor.
-void Floor3(int max_width, int max_length)
+void Floor2(/*f2DisabledWidthStart, f2DisabledWidthEnd, f2DisabledLengthStart_1, f2DisabledLengthEnd_1, f2DisabledLengthStart_2, f2DisabledLengthEnd_2*/)
 {
-	printf("floor3 width=%d,length=%d\n", max_width, max_length);
 	/*code*/
 }
 
@@ -73,10 +114,15 @@ void displayFloor() {
 }
 
 
+//random integer between 1-6
+int rand_int_0_6(void) {
+    return (rand() % 6) + 1;  // 1–6
+}
+
+
 //direction dice
 int directionDice()
 {
-	srand(time(NULL));
 	return rand_int_0_6();
 }
 
@@ -84,12 +130,11 @@ int directionDice()
 //movement dice
 int movementDice()
 {
-	srand(time(NULL));
 	return rand_int_0_6();
 }
 
 
-void loadStairs(Stairs *stairs){
+void loadStairs(Stairs **stairs){
     FILE *file = fopen("stairs.txt", "r");
 
     if (file == NULL){
@@ -97,7 +142,7 @@ void loadStairs(Stairs *stairs){
         exit(1);
     }
 
-    int capacity;
+    int capacity = 0;
     int count;
     char character;
 
@@ -108,25 +153,24 @@ void loadStairs(Stairs *stairs){
     }
     rewind(file);
 
-	stairs = malloc(sizeof(Stairs) * capacity);
+	*stairs = malloc(sizeof(Stairs) * capacity);
 
-    printf("%ld bytes for all stairs\n", sizeof(Stairs) * capacity);
+    printf("%ld bytes for all stairs%d\n", sizeof(Stairs) * capacity, capacity);
 
 	//stairs behaves like a dynamic array of struct Stair.(remember this for future purposes stupid ass)
 	for (count = 0; count < capacity; count++){
-		if (fscanf(file, "%d %d %d %d %d %d", &stairs[count].startFloor, &stairs[count].startWidth, &stairs[count].startLength, &stairs[count].endFloor, &stairs[count].endWidth, &stairs[count].endLength) == 6)
+		if (fscanf(file, "%d %d %d %d %d %d", &(*stairs)[count].startFloor, &(*stairs)[count].startWidth, &(*stairs)[count].startLength, &(*stairs)[count].endFloor, &(*stairs)[count].endWidth, &(*stairs)[count].endLength) == 6)
 		{
-			printf("\t%d,%d,%d,%d,%d,%d\n", stairs[count].startFloor, stairs[count].startWidth, stairs[count].startLength, stairs[count].endFloor, stairs[count].endWidth, stairs[count].endLength);
+			printf("\t%d,%d,%d,%d,%d,%d\n", (*stairs)[count].startFloor, (*stairs)[count].startWidth, (*stairs)[count].startLength, (*stairs)[count].endFloor, (*stairs)[count].endWidth, (*stairs)[count].endLength);
 		}
 	}
 
-	free(stairs);	//remove this line.
 	fclose(file);
 
 }
 
 
-void loadPoles(Poles *poles){
+void loadPoles(Poles **poles){
     FILE *file = fopen("poles.txt", "r");
 
     if (file == NULL){
@@ -134,7 +178,7 @@ void loadPoles(Poles *poles){
         exit(1);
     }
 
-    int capacity;
+    int capacity = 0;
     int count;
     char character;
 
@@ -145,24 +189,23 @@ void loadPoles(Poles *poles){
     }
 	rewind(file);
     
-    poles = malloc(sizeof(Poles) * capacity);
+    *poles = malloc(sizeof(Poles) * capacity);
 
-    printf("%ld bytes for all Poles\n", sizeof(Poles) * capacity);
+    printf("%ld bytes for all Poles%d\n", sizeof(Poles) * capacity, capacity);
 
 	for (count = 0; count < capacity; count++){
-		if (fscanf(file, "%d %d %d %d", &poles[count].startFloor, &poles[count].endFloor, &poles[count].width, &poles[count].length) == 4)
+		if (fscanf(file, "%d %d %d %d", &(*poles)[count].startFloor, &(*poles)[count].endFloor, &(*poles)[count].width, &(*poles)[count].length) == 4)
 		{
-			printf("\t%d,%d,%d,%d\n", poles[count].startFloor, poles[count].endFloor, poles[count].width, poles[count].length);
+			printf("\t%d,%d,%d,%d\n", (*poles)[count].startFloor, (*poles)[count].endFloor, (*poles)[count].width, (*poles)[count].length);
 		}
 	}
 
-	free(poles);	//remove this line.
 	fclose(file);
 
 }
 
 
-void loadWalls(Walls *walls){
+void loadWalls(Walls **walls){
     FILE *file = fopen("walls.txt", "r");
 
     if (file == NULL){
@@ -170,7 +213,7 @@ void loadWalls(Walls *walls){
         exit(1);
     }
 
-    int capacity;
+    int capacity = 0;
     int count;
     char character;
 
@@ -181,20 +224,50 @@ void loadWalls(Walls *walls){
     }
 	rewind(file);
     
-    walls = malloc(sizeof(Walls) * capacity);
+    *walls = malloc(sizeof(Walls) * capacity);
 
-    printf("%ld bytes for all walls\n", sizeof(Walls) * capacity);
+    printf("%ld bytes for all walls%d\n", sizeof(Walls) * capacity, capacity);
 
 	for (count = 0; count < capacity; count++){
-		if (fscanf(file, "%d %d %d %d %d", &walls[count].floor, &walls[count].startWidth, &walls[count].startLength, &walls[count].endWidth, &walls[count].endLength) == 5)
+		if (fscanf(file, "%d %d %d %d %d", &(*walls)[count].floor, &(*walls)[count].startWidth, &(*walls)[count].startLength, &(*walls)[count].endWidth, &(*walls)[count].endLength) == 5)
 		{
-			printf("\t%d,%d,%d,%d,%d\n", walls[count].floor, walls[count].startWidth, walls[count].startLength, walls[count].endWidth, walls[count].endLength);
+			printf("\t%d,%d,%d,%d,%d\n", (*walls)[count].floor, (*walls)[count].startWidth, (*walls)[count].startLength, (*walls)[count].endWidth, (*walls)[count].endLength);
 		}
 	}
 
-	free(walls);	//remove this line.
 	fclose(file);
 
+}
+
+
+void loadSeed(Seed **Seeds){
+	FILE *file = fopen("seed.txt", "r");
+
+	int lines = 0;
+	char character;
+
+	while ((character = fgetc(file)) != EOF) {
+		if (character == '\n') {
+			lines++;
+		}
+	}
+	rewind(file);
+
+	*Seeds = malloc(sizeof(Seed) * lines);
+	
+	printf("%ld bytes for all seeds%d\n", sizeof(Seed) * lines, lines);
+
+	for (int i = 0; i < lines; i++)
+	{
+		if (fscanf(file, "%u", &((*Seeds)[i].seed)) != 1)
+		{
+			break;
+		}
+	}
+
+	seed_count = lines;
+	fclose(file);
+	
 }
 
 
@@ -209,11 +282,24 @@ int play()
 
 	printf("\n");
 
-	//printf("%d\n", movementDice());
 	loadStairs(&stairs);
 	loadPoles(&poles);
 	loadWalls(&walls);
 	loadPlayers(&players);
+	loadSeed(&seeds);
+
+	for (int i = 0; i < seed_count; i++)
+	{
+		srand(seeds[i].seed);
+
+	    printf("Movement dice: %d\n", movementDice());
+		printf("Direction dice: %d\n", directionDice());
+	}
+
+	free(stairs);
+	free(poles);
+	free(walls);
+	free(seeds);
 
 	return 0;
 }
