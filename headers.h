@@ -12,10 +12,24 @@ typedef enum
 
 
 //block architecture.
-struct Cell
+typedef struct
 {
 	int floor,width,length;	//cells(blocks)
-};
+}Flag;
+
+
+//Bawana
+typedef struct
+{
+	int FoodPoisoning_1[3];
+	int Disoriented_1[3];
+	int Triggered_1[3];
+	int Happy_1[3];
+	int FoodPoisoning_2[3];
+	int Disoriented_2[3];
+	int Triggered_2[3];
+	int Happy_2[3];
+}Bwna;
 
 
 //Stairs
@@ -72,8 +86,8 @@ typedef struct
 void loadStairs(Stairs **stairs);
 void loadPoles(Poles **poles);
 void loadWalls(Walls **walls);
-void loadPlayers(Player *players);
-int rand_int_0_6(void);
+void loadPlayers(Player **players);
+void Bawana(Bwna **bawana);
 int play();
 
 #endif
