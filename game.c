@@ -238,26 +238,6 @@ void validateStairs(Stairs **tempStairs, Stairs **stairs, int tempstairs_count)
 		{
 			stairs_count++;
 		}
-		//else if (!(((*tempStairs)[i].endFloor == 0) && ((*tempStairs)[i].endWidth >= 6 && (*tempStairs)[i].endWidth <= 9) && ((*tempStairs)[i].endLength >= 8 && (*tempStairs)[i].endLength <= 16)))
-		//{
-		//	stairs_count++;
-		//}
-		//else if (!(((*tempStairs)[i].startFloor == 1) && ((*tempStairs)[i].startWidth >= 0 && (*tempStairs)[i].startWidth <= 5) && ((*tempStairs)[i].startLength >= 8 && (*tempStairs)[i].startLength <= 16)))
-		//{
-		//	stairs_count++;
-		//}
-		//else if (!(((*tempStairs)[i].endFloor == 1) && ((*tempStairs)[i].endWidth >= 0 && (*tempStairs)[i].endWidth <= 5) && ((*tempStairs)[i].endLength >= 8 && (*tempStairs)[i].endLength <= 16)))
-		//{
-		//	stairs_count++;
-		//}
-		//else if (!(((*tempStairs)[i].startFloor == 2) && ((*tempStairs)[i].startWidth >= 0 && (*tempStairs)[i].startWidth <= 9) && (((*tempStairs)[i].startLength >= 0 && (*tempStairs)[i].startLength <= 7) || ((*tempStairs)[i].startLength >= 17 && (*tempStairs)[i].startLength <= 24))))
-		//{
-		//	stairs_count++;
-		//}
-		//else if (!(((*tempStairs)[i].endFloor == 2) && ((*tempStairs)[i].endWidth >= 0 && (*tempStairs)[i].endWidth <= 9) && (((*tempStairs)[i].endLength >= 0 && (*tempStairs)[i].endLength <= 7) || ((*tempStairs)[i].endLength >= 17 && (*tempStairs)[i].endLength <= 24))))
-		//{
-		//	stairs_count++;
-		//}
 		
 	}
 
@@ -277,26 +257,6 @@ void validateStairs(Stairs **tempStairs, Stairs **stairs, int tempstairs_count)
 		{
 			(*stairs)[j++] = (*tempStairs)[i];
 		}
-		//else if (!(((*tempStairs)[i].endFloor == 0) && ((*tempStairs)[i].endWidth >= 6 && (*tempStairs)[i].endWidth <= 9) && ((*tempStairs)[i].endLength >= 8 && (*tempStairs)[i].endLength <= 16)))
-		//{
-		//	(*stairs)[j++] = (*tempStairs)[i];
-		//}
-		//else if (!(((*tempStairs)[i].startFloor == 1) && ((*tempStairs)[i].startWidth >= 0 && (*tempStairs)[i].startWidth <= 5) && ((*tempStairs)[i].startLength >= 8 && (*tempStairs)[i].startLength <= 16)))
-		//{
-		//	(*stairs)[j++] = (*tempStairs)[i];
-		//}
-		//else if (!(((*tempStairs)[i].endFloor == 1) && ((*tempStairs)[i].endWidth >= 0 && (*tempStairs)[i].endWidth <= 5) && ((*tempStairs)[i].endLength >= 8 && (*tempStairs)[i].endLength <= 16)))
-		//{
-		//	(*stairs)[j++] = (*tempStairs)[i];
-		//}
-		//else if (!(((*tempStairs)[i].startFloor == 2) && ((*tempStairs)[i].startWidth >= 0 && (*tempStairs)[i].startWidth <= 9) && (((*tempStairs)[i].startLength >= 0 && (*tempStairs)[i].startLength <= 7) || ((*tempStairs)[i].startLength >= 17 && (*tempStairs)[i].startLength <= 24))))
-		//{
-		//	(*stairs)[j++] = (*tempStairs)[i];
-		//}
-		//else if (!(((*tempStairs)[i].endFloor == 2) && ((*tempStairs)[i].endWidth >= 0 && (*tempStairs)[i].endWidth <= 9) && (((*tempStairs)[i].endLength >= 0 && (*tempStairs)[i].endLength <= 7) || ((*tempStairs)[i].endLength >= 17 && (*tempStairs)[i].endLength <= 24))))
-		//{
-		//	(*stairs)[j++] = (*tempStairs)[i];
-		//}
 		
 	}
 
@@ -337,11 +297,42 @@ void loadStairs(Stairs **stairs){
 	validateStairs(&tempstairs, stairs, tempcapacity);
 	free(tempstairs);
 
-	//stairs_count = tempcapacity;
 	fclose(file);
 
 }
 
+
+//check whether the poles are in disallowed areas
+void validatePoles(Poles **tempPoles, Poles **poles, int tempPoles_count){
+	//count valid poles
+	for (int i = 0; i < tempPoles_count; i++)
+	{
+		if (!((((*tempPoles)[i].endFloor == 0) && ((*tempPoles)[i].width >= 6 && (*tempPoles)[i].width <= 9) && ((*tempPoles)[i].length >= 8 && (*tempPoles)[i].length <= 16)) ||
+			(((*tempPoles)[i].startFloor == 1 || (*tempPoles)[i].endFloor == 1) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 5) && ((*tempPoles)[i].length >= 8 && (*tempPoles)[i].length <= 16)) ||
+			(((*tempPoles)[i].startFloor == 2 || (*tempPoles)[i].endFloor == 2) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 9) && (((*tempPoles)[i].length >= 0 && (*tempPoles)[i].length <= 7) || ((*tempPoles)[i].length >= 17 && (*tempPoles)[i].length <= 24)))))
+		{
+			poles_count++;
+		}
+		
+	}
+
+	*poles = malloc(sizeof(Poles) * poles_count);
+	printf("%ld bytes for all %d poles\n", sizeof(Poles) * poles_count, poles_count);
+
+	//allocate memory for valid poles
+	int j = 0;
+	for (int i = 0; i < tempPoles_count; i++)
+	{
+		if (!((((*tempPoles)[i].startFloor == 0 || (*tempPoles)[i].endFloor == 0) && ((*tempPoles)[i].width >= 6 && (*tempPoles)[i].width <= 9) && ((*tempPoles)[i].length >= 8 && (*tempPoles)[i].length <= 16)) ||
+			(((*tempPoles)[i].startFloor == 1 || (*tempPoles)[i].endFloor == 1) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 5) && ((*tempPoles)[i].length >= 8 && (*tempPoles)[i].length <= 16)) ||
+			(((*tempPoles)[i].startFloor == 2 || (*tempPoles)[i].endFloor == 2) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 9) && (((*tempPoles)[i].length >= 0 && (*tempPoles)[i].length <= 7) || ((*tempPoles)[i].length >= 17 && (*tempPoles)[i].length <= 24)))))
+		{
+			(*poles)[j++] = (*tempPoles)[i];
+		}
+		
+	}
+	
+}
 
 void loadPoles(Poles **poles){
     FILE *file = fopen("poles.txt", "r");
@@ -361,24 +352,138 @@ void loadPoles(Poles **poles){
         }
     }
 	rewind(file);
-    
-    *poles = malloc(sizeof(Poles) * capacity);
 
-    printf("%ld bytes for all %d Poles\n", sizeof(Poles) * capacity, capacity);
+    Poles *tempPoles = malloc(sizeof(Poles) * capacity);
+
+    printf("%ld bytes for all %d tempPoles\n", sizeof(Poles) * capacity, capacity);
 
 	for (count = 0; count < capacity; count++){
-		if (fscanf(file, "%d %d %d %d", &(*poles)[count].startFloor, &(*poles)[count].endFloor, &(*poles)[count].width, &(*poles)[count].length) != 4)
+		if (fscanf(file, "%d %d %d %d", &tempPoles[count].startFloor, &tempPoles[count].endFloor, &tempPoles[count].width, &tempPoles[count].length) != 4)
 		{
-			break;		//printf("\t%d,%d,%d,%d\n", (*poles)[count].startFloor, (*poles)[count].endFloor, (*poles)[count].width, (*poles)[count].length);
+			break;		//printf("\t%d,%d,%d,%d\n", tempPoles[count].startFloor, tempPoles[count].endFloor, tempPoles[count].width, tempPoles[count].length);
 		}
 	}
 
-	poles_count = capacity;
+	validatePoles(&tempPoles, poles, capacity);
+	free(tempPoles);
+
 	fclose(file);
 
 }
 
 
+/*
+//check whether the walls are in disabled areas
+void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
+	//count valid walls
+	int validwalls_count = 0;
+	for (int i = 0; i < tempWalls_count; i++)
+	{
+		if (!((((*tempWalls)[i].floor == 0) && ((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].floor == 1) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) ||
+			(((*tempWalls)[i].floor == 2) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24)))))
+		{
+			validwalls_count++;
+		}
+
+	}
+
+	Walls *validwalls = malloc(sizeof(Walls) * validwalls_count);
+	printf("%ld bytes for all %d validwalls\n", sizeof(Walls) * validwalls_count, validwalls_count);
+
+	//allocate memory for valid walls
+	int j = 0;
+	for (int i = 0; i < tempWalls_count; i++)
+	{
+		if (!((((*tempWalls)[i].floor == 0) && ((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].floor == 1) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) ||
+			(((*tempWalls)[i].floor == 2) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24)))))
+		{
+			validwalls[j++] = (*tempWalls)[i];
+		}
+	}
+
+	//free(tempWalls);
+
+	//count valid2 (without walls around bawana) walls
+	for (int i = 0; i < validwalls_count; i++)
+	{
+		if (!(validwalls[i].floor == floor0) && 
+			((validwalls[i].startLength == 7 || validwalls[i].endLength == 7) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
+			((validwalls[i].startLength == 17 || validwalls[i].endLength == 17) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
+			(((validwalls[i].startLength <= 12 && validwalls[i].endLength >= 12) || (validwalls[i].endLength <= 12 && validwalls[i].startLength >= 12)) && (validwalls[i].startWidth == 5 && validwalls[i].endWidth == 5)))
+		{
+			walls_count++;
+		}
+
+	}
+
+	*walls = malloc(sizeof(Walls) * walls_count);
+
+	printf("%ld bytes for all %d walls\n", sizeof(Walls) * walls_count, walls_count);
+
+	//allocate memory for valid2 walls (without walls around bawana)
+	int k = 0;
+	for (int i = 0; i < validwalls_count; i++)
+	{
+		//check if the walls are around the standing area
+		if (!((validwalls[i].floor == floor0) && 
+			((validwalls[i].startLength == 7 || validwalls[i].endLength == 7) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
+			((validwalls[i].startLength == 17 || validwalls[i].endLength == 17) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
+			(((validwalls[i].startLength <= 12 && validwalls[i].endLength >= 12) || (validwalls[i].endLength <= 12 && validwalls[i].startLength >= 12)) && (validwalls[i].startWidth == 5 && validwalls[i].endWidth == 5))))
+		{
+			(*walls)[k++] = validwalls[i];
+		}
+
+	}
+
+	//walls_count = tempcapacity;
+	//free(tempWalls);
+	free(validwalls);
+
+}
+
+
+void loadWalls(Walls **walls){
+    FILE *file = fopen("walls.txt", "r");
+
+    if (file == NULL){
+        perror("Error opening file!");
+        exit(1);
+    }
+
+    int tempcapacity = 0;
+    int count;
+    char character;
+
+    while ((character = fgetc(file)) != EOF) {
+        if (character == '\n') {
+            tempcapacity++;
+        }
+    }
+	rewind(file);
+
+    // *walls = malloc(sizeof(Walls) * tempcapacity);
+
+	Walls *tempWalls = malloc(sizeof(Walls) * tempcapacity);
+
+    printf("%ld bytes for all %d tempwalls\n", sizeof(Walls) * tempcapacity, tempcapacity);
+
+	for (count = 0; count < tempcapacity; count++){
+		if (fscanf(file, "%d %d %d %d %d", &tempWalls[count].floor, &tempWalls[count].startWidth, &tempWalls[count].startLength, &tempWalls[count].endWidth, &tempWalls[count].endLength) != 5)
+		{
+			break; //printf("\t%d,%d,%d,%d,%d\n", tempWalls[count].floor, tempWalls[count].startWidth, tempWalls[count].startLength, tempWalls[count].endWidth, tempWalls[count].endLength);
+		}
+	}
+
+	//validateWalls(&tempWalls, walls, tempcapacity);
+	free(tempWalls);
+	fclose(file);
+
+}
+*/
+
+//check whether the walls are in disabled areas
 void loadWalls(Walls **walls){
     FILE *file = fopen("walls.txt", "r");
 
