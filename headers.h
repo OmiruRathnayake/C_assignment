@@ -4,10 +4,10 @@
 //difining directions as datatypes.
 typedef enum
 {
-	NORTH = (-1),	//width + NORTH = w - 1 
-	EAST = (1), 	//length + EAST = l + 1
-	SOUTH = (1), 	//width + SOUTH = w + 1
-	WEST = (-1)		//length + WEST = l - 1
+	NORTH = 2,	 
+	EAST = 3, 	
+	SOUTH = 4, 	
+	WEST = 5
 }directions;
 
 
