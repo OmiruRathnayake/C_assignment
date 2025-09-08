@@ -932,7 +932,7 @@ bool isWallInPath(int playerName, int movementDiceValue)
 
 
 //check if there is a pole in the path
-void isPoleInPath(int playerName, int movementDiceValue)
+void PoleInPath(int playerName, int movementDiceValue)
 {
 	int direction = (players)[playerName].direction;
 	int remainingMoves;
