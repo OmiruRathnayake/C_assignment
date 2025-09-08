@@ -334,6 +334,7 @@ void validatePoles(Poles **tempPoles, Poles **poles, int tempPoles_count){
 	
 }
 
+
 void loadPoles(Poles **poles){
     FILE *file = fopen("poles.txt", "r");
 
@@ -372,16 +373,18 @@ void loadPoles(Poles **poles){
 }
 
 
-/*
 //check whether the walls are in disabled areas
 void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 	//count valid walls
 	int validwalls_count = 0;
 	for (int i = 0; i < tempWalls_count; i++)
 	{
-		if (!((((*tempWalls)[i].floor == 0) && ((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
-			(((*tempWalls)[i].floor == 1) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) ||
-			(((*tempWalls)[i].floor == 2) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24)))))
+		if (!((((*tempWalls)[i].floor == 0) && ((((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].endWidth >= 6 && (*tempWalls)[i].endWidth <= 9) && ((*tempWalls)[i].endLength >= 8 && (*tempWalls)[i].endLength <= 16)))) || 
+			(((*tempWalls)[i].floor == 1) && ((((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].endWidth >= 0 && (*tempWalls)[i].endWidth <= 5) && ((*tempWalls)[i].endLength >= 8 && (*tempWalls)[i].endLength <= 16)))) ||
+			(((*tempWalls)[i].floor == 2) && ((((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24))) || 
+			(((*tempWalls)[i].endWidth >= 0 && (*tempWalls)[i].endWidth <= 9) && (((*tempWalls)[i].endLength >= 0 && (*tempWalls)[i].endLength <= 7) || ((*tempWalls)[i].endLength >= 17 && (*tempWalls)[i].endLength <= 24)))))))
 		{
 			validwalls_count++;
 		}
@@ -395,23 +398,35 @@ void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 	int j = 0;
 	for (int i = 0; i < tempWalls_count; i++)
 	{
-		if (!((((*tempWalls)[i].floor == 0) && ((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
-			(((*tempWalls)[i].floor == 1) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) ||
-			(((*tempWalls)[i].floor == 2) && ((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24)))))
+		if (!((((*tempWalls)[i].floor == 0) && ((((*tempWalls)[i].startWidth >= 6 && (*tempWalls)[i].startWidth <= 9) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].endWidth >= 6 && (*tempWalls)[i].endWidth <= 9) && ((*tempWalls)[i].endLength >= 8 && (*tempWalls)[i].endLength <= 16)))) || 
+			(((*tempWalls)[i].floor == 1) && ((((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 5) && ((*tempWalls)[i].startLength >= 8 && (*tempWalls)[i].startLength <= 16)) || 
+			(((*tempWalls)[i].endWidth >= 0 && (*tempWalls)[i].endWidth <= 5) && ((*tempWalls)[i].endLength >= 8 && (*tempWalls)[i].endLength <= 16)))) ||
+			(((*tempWalls)[i].floor == 2) && ((((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24))) || 
+			(((*tempWalls)[i].endWidth >= 0 && (*tempWalls)[i].endWidth <= 9) && (((*tempWalls)[i].endLength >= 0 && (*tempWalls)[i].endLength <= 7) || ((*tempWalls)[i].endLength >= 17 && (*tempWalls)[i].endLength <= 24)))))))
 		{
 			validwalls[j++] = (*tempWalls)[i];
 		}
 	}
 
-	//free(tempWalls);
+/*
+	//print valid walls
+	printf("Valid walls are:\n");
+	for (int i = 0; i < validwalls_count; i++)
+	{
+		printf("\t%d,%d,%d,%d,%d\n", validwalls[i].floor, validwalls[i].startWidth, validwalls[i].startLength, validwalls[i].endWidth, validwalls[i].endLength);
+	}
+*/	
+
+	free(*tempWalls);
 
 	//count valid2 (without walls around bawana) walls
 	for (int i = 0; i < validwalls_count; i++)
 	{
-		if (!(validwalls[i].floor == floor0) && 
+		if (!((validwalls[i].floor == floor0) && 
 			((validwalls[i].startLength == 7 || validwalls[i].endLength == 7) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
 			((validwalls[i].startLength == 17 || validwalls[i].endLength == 17) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
-			(((validwalls[i].startLength <= 12 && validwalls[i].endLength >= 12) || (validwalls[i].endLength <= 12 && validwalls[i].startLength >= 12)) && (validwalls[i].startWidth == 5 && validwalls[i].endWidth == 5)))
+			(((validwalls[i].startLength <= 12 && validwalls[i].endLength >= 12) || (validwalls[i].endLength <= 12 && validwalls[i].startLength >= 12)) && (validwalls[i].startWidth == 5 && validwalls[i].endWidth == 5))))
 		{
 			walls_count++;
 		}
@@ -419,7 +434,6 @@ void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 	}
 
 	*walls = malloc(sizeof(Walls) * walls_count);
-
 	printf("%ld bytes for all %d walls\n", sizeof(Walls) * walls_count, walls_count);
 
 	//allocate memory for valid2 walls (without walls around bawana)
@@ -437,8 +451,6 @@ void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 
 	}
 
-	//walls_count = tempcapacity;
-	//free(tempWalls);
 	free(validwalls);
 
 }
@@ -463,10 +475,7 @@ void loadWalls(Walls **walls){
     }
 	rewind(file);
 
-    // *walls = malloc(sizeof(Walls) * tempcapacity);
-
 	Walls *tempWalls = malloc(sizeof(Walls) * tempcapacity);
-
     printf("%ld bytes for all %d tempwalls\n", sizeof(Walls) * tempcapacity, tempcapacity);
 
 	for (count = 0; count < tempcapacity; count++){
@@ -476,13 +485,12 @@ void loadWalls(Walls **walls){
 		}
 	}
 
-	//validateWalls(&tempWalls, walls, tempcapacity);
-	free(tempWalls);
+	validateWalls(&tempWalls, walls, tempcapacity);
 	fclose(file);
 
 }
-*/
 
+/*
 //check whether the walls are in disabled areas
 void loadWalls(Walls **walls){
     FILE *file = fopen("walls.txt", "r");
@@ -552,7 +560,7 @@ void loadWalls(Walls **walls){
 	fclose(file);
 
 }
-
+*/
 
 void loadSeed(Seed **Seed){
 	FILE *file = fopen("seed.txt", "r");
