@@ -29,7 +29,7 @@ typedef struct
 	int Disoriented_2[3];
 	int Triggered_2[3];
 	int Happy_2[3];
-}Bwna;
+}Bawana;
 
 
 //Stairs
@@ -88,7 +88,7 @@ void loadStairs(Stairs **stairs);
 void loadPoles(Poles **poles);
 void loadWalls(Walls **walls);
 void loadPlayers(Player **players);
-void Bawana(Bwna **bawana);
+void initBawana(Bawana **bawana);
 int play();
 
 #endif
