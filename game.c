@@ -16,7 +16,7 @@
 #define A 0
 #define B 1
 #define C 2
-#define GAMEOVER 1
+#define GAMEOVER 0
 
 Stairs *stairs;
 Poles *poles;
@@ -26,9 +26,9 @@ Player *players;
 Bawana *bawana;
 Flag *flag;
 
-int stairs_count;
-int poles_count;
-int walls_count;
+int stairs_count = 0;
+int poles_count = 0;
+int walls_count = 0;
 
 int player_count = 0;
 int currentPlayer = 0;
@@ -61,6 +61,7 @@ int standAreaWidthEnd = 9;
 int standAreaLengthStart = 8;
 int standAreaLengthEnd = 16;
 
+//Floor0 boundaries
 //Floor1
 int f1DisabledWidthStart = 0;
 int f1DisabledWidthEnd = 5;
@@ -183,25 +184,6 @@ void displayFloor() {
 }
 
 
-/*
-//random integer between 0-3
-int rand_int_0_3(void) {
-	return (rand() % 3);  // 0–3
-}
-
-
-//random integer between 0-9
-int rand_int_0_9(void) {
-	return (rand() % 10);  // 0–9
-}
-
-
-//random integer between 0-24
-int rand_int_0_24(void) {
-	return (rand() % 25);  // 0–24
-}
-*/
-
 //direction dice
 int directionDice()
 {
@@ -248,7 +230,8 @@ void validateStairs(Stairs **tempStairs, Stairs **stairs, int tempstairs_count)
 			(((*tempStairs)[i].startFloor == 2) && ((*tempStairs)[i].startWidth >= 0 && (*tempStairs)[i].startWidth <= 9) && (((*tempStairs)[i].startLength >= 0 && (*tempStairs)[i].startLength <= 7) || ((*tempStairs)[i].startLength >= 17 && (*tempStairs)[i].startLength <= 24))) ||
 			(((*tempStairs)[i].endFloor == 2) && ((*tempStairs)[i].endWidth >= 0 && (*tempStairs)[i].endWidth <= 9) && (((*tempStairs)[i].endLength >= 0 && (*tempStairs)[i].endLength <= 7) || ((*tempStairs)[i].endLength >= 17 && (*tempStairs)[i].endLength <= 24)))))
 		{
-			(*stairs)[j++] = (*tempStairs)[i];
+			(*stairs)[j] = (*tempStairs)[i];
+			j++;
 		}
 		
 	}
@@ -281,7 +264,7 @@ void loadStairs(Stairs **stairs){
 
 	//stairs behaves like a dynamic array of struct Stair.(remember this for future purposes stupid ass)
 	for (count = 0; count < tempcapacity; count++){
-		if (fscanf(file, "%d %d %d %d %d %d", &tempstairs[count].startFloor, &tempstairs[count].startWidth, &tempstairs[count].startLength, &tempstairs[count].endFloor, &tempstairs[count].endWidth, &tempstairs[count].endLength) != 6)
+		if (fscanf(file, "[%d,%d,%d,%d,%d,%d]\n", &tempstairs[count].startFloor, &tempstairs[count].startWidth, &tempstairs[count].startLength, &tempstairs[count].endFloor, &tempstairs[count].endWidth, &tempstairs[count].endLength) != 6)
 		{
 			break;		//printf("\t%d,%d,%d,%d,%d,%d\n", tempstairs[count].startFloor, tempstairs[count].startWidth, tempstairs[count].startLength, tempstairs[count].endFloor, tempstairs[count].endWidth, tempstairs[count].endLength);
 		}
@@ -320,7 +303,8 @@ void validatePoles(Poles **tempPoles, Poles **poles, int tempPoles_count){
 			(((*tempPoles)[i].startFloor == 1 || (*tempPoles)[i].endFloor == 1) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 5) && ((*tempPoles)[i].length >= 8 && (*tempPoles)[i].length <= 16)) ||
 			(((*tempPoles)[i].startFloor == 2 || (*tempPoles)[i].endFloor == 2) && ((*tempPoles)[i].width >= 0 && (*tempPoles)[i].width <= 9) && (((*tempPoles)[i].length >= 0 && (*tempPoles)[i].length <= 7) || ((*tempPoles)[i].length >= 17 && (*tempPoles)[i].length <= 24)))))
 		{
-			(*poles)[j++] = (*tempPoles)[i];
+			(*poles)[j] = (*tempPoles)[i];
+			j++;
 		}
 		
 	}
@@ -352,7 +336,7 @@ void loadPoles(Poles **poles){
     printf("%ld bytes for all %d tempPoles\n", sizeof(Poles) * capacity, capacity);
 
 	for (count = 0; count < capacity; count++){
-		if (fscanf(file, "%d %d %d %d", &tempPoles[count].startFloor, &tempPoles[count].endFloor, &tempPoles[count].width, &tempPoles[count].length) != 4)
+		if (fscanf(file, "[%d,%d,%d,%d]\n", &tempPoles[count].startFloor, &tempPoles[count].endFloor, &tempPoles[count].width, &tempPoles[count].length) != 4)
 		{
 			break;		//printf("\t%d,%d,%d,%d\n", tempPoles[count].startFloor, tempPoles[count].endFloor, tempPoles[count].width, tempPoles[count].length);
 		}
@@ -398,7 +382,8 @@ void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 			(((*tempWalls)[i].floor == 2) && ((((*tempWalls)[i].startWidth >= 0 && (*tempWalls)[i].startWidth <= 9) && (((*tempWalls)[i].startLength >= 0 && (*tempWalls)[i].startLength <= 7) || ((*tempWalls)[i].startLength >= 17 && (*tempWalls)[i].startLength <= 24))) || 
 			(((*tempWalls)[i].endWidth >= 0 && (*tempWalls)[i].endWidth <= 9) && (((*tempWalls)[i].endLength >= 0 && (*tempWalls)[i].endLength <= 7) || ((*tempWalls)[i].endLength >= 17 && (*tempWalls)[i].endLength <= 24)))))))
 		{
-			validwalls[j++] = (*tempWalls)[i];
+			validwalls[j] = (*tempWalls)[i];
+			j++;
 		}
 	}
 
@@ -439,7 +424,8 @@ void validateWalls(Walls **tempWalls, Walls **walls, int tempWalls_count){
 			((validwalls[i].startLength == 17 || validwalls[i].endLength == 17) && (validwalls[i].startWidth == 9 && validwalls[i].endWidth == 9)) || 
 			(((validwalls[i].startLength <= 12 && validwalls[i].endLength >= 12) || (validwalls[i].endLength <= 12 && validwalls[i].startLength >= 12)) && (validwalls[i].startWidth == 5 && validwalls[i].endWidth == 5))))
 		{
-			(*walls)[k++] = validwalls[i];
+			(*walls)[k] = validwalls[i];
+			k++;
 		}
 
 	}
@@ -472,7 +458,7 @@ void loadWalls(Walls **walls){
     printf("%ld bytes for all %d tempwalls\n", sizeof(Walls) * tempcapacity, tempcapacity);
 
 	for (count = 0; count < tempcapacity; count++){
-		if (fscanf(file, "%d %d %d %d %d", &tempWalls[count].floor, &tempWalls[count].startWidth, &tempWalls[count].startLength, &tempWalls[count].endWidth, &tempWalls[count].endLength) != 5)
+		if (fscanf(file, "[%d,%d,%d,%d,%d]\n", &tempWalls[count].floor, &tempWalls[count].startWidth, &tempWalls[count].startLength, &tempWalls[count].endWidth, &tempWalls[count].endLength) != 5)
 		{
 			break; //printf("\t%d,%d,%d,%d,%d\n", tempWalls[count].floor, tempWalls[count].startWidth, tempWalls[count].startLength, tempWalls[count].endWidth, tempWalls[count].endLength);
 		}
@@ -484,15 +470,22 @@ void loadWalls(Walls **walls){
 }
 
 
-void loadSeed(Seed **Seed){
-	FILE *file = fopen("seed.txt", "r");
-
-	*Seed = malloc(sizeof(Seed));
-
-	printf("%ld bytes for the seed\n", sizeof(Seed));
-
-	fscanf(file, "%u", &(*Seed)->seed);
-
+void loadSeed(Seed **seed){
+    FILE *file = fopen("seed.txt", "r");
+    
+	if (file == NULL) {
+        perror("Error opening seed.txt");
+        exit(1);
+    }
+    
+	*seed = malloc(sizeof(Seed));
+    printf("%ld bytes for the seed\n", sizeof(Seed));
+    
+	if (fscanf(file, "%u", &(*seed)->seed) != 1) {
+        printf("Error reading seed\n");
+        exit(1);
+    }
+    
 	fclose(file);
 	
 }
@@ -509,7 +502,7 @@ void loadPlayers(Player **players){
 	(*players)[A].currentLength = A_START[2];
 	(*players)[A].isPlayerActive = false;
 	(*players)[A].throwCount = 0;
-	(*players)[A].score = STARTING_POINTS;
+	(*players)[A].score = 0;
 
 	(*players)[B].direction = WEST;
 	(*players)[B].currentFloor = floor0;
@@ -517,7 +510,7 @@ void loadPlayers(Player **players){
 	(*players)[B].currentLength = B_START[2];
 	(*players)[B].isPlayerActive = false;
 	(*players)[B].throwCount = 0;
-	(*players)[B].score = STARTING_POINTS;
+	(*players)[B].score = 0;
 
 	(*players)[C].direction = EAST;
 	(*players)[C].currentFloor = floor0;
@@ -525,7 +518,7 @@ void loadPlayers(Player **players){
 	(*players)[C].currentLength = C_START[2];
 	(*players)[C].isPlayerActive = false;
 	(*players)[C].throwCount = 0;
-	(*players)[C].score = STARTING_POINTS;
+	(*players)[C].score = 0;
 
 	player_count = 3;
 
@@ -545,7 +538,7 @@ void loadFlag(Flag **flags){
 
 	*flags = malloc(sizeof(Flag));
 
-	fscanf(file, "%d %d %d", &(*flags)->floor, &(*flags)->width, &(*flags)->length);
+	fscanf(file, "[%d,%d,%d]", &(*flags)->floor, &(*flags)->width, &(*flags)->length);
 
 	printf("%ld bytes for the flag\n", sizeof(Flag));
 
@@ -557,7 +550,9 @@ void loadFlag(Flag **flags){
 //check if the player is in bawana
 bool isInBawana(Player **players, int playerName)
 {
-	if(((*players)[playerName].currentFloor == floor0) && (((*players)[playerName].currentWidth > bawanaWall1[1]) && ((*players)[playerName].currentLength > bawanaWall1[2])))
+	if(((*players)[playerName].currentFloor == floor0) && 
+		(((*players)[playerName].currentWidth >= 7 && (*players)[playerName].currentWidth <= 9) && ((*players)[playerName].currentLength >= 21 && (*players)[playerName].currentLength <= 24)) && 
+		((*players)[playerName].score <= 0))
 	{
 		return true;
 	}
@@ -579,7 +574,7 @@ void bawanaLogic(Player **players, Bawana **bawana, int playerName)
 			((*players)[playerName].currentLength == (*bawana)->FoodPoisoning_1[2] || (*players)[playerName].currentLength == (*bawana)->FoodPoisoning_2[2]))  
 		{
 			printf("%c eats from Bawana and have a bad case of food poisoning. Will need three rounds to recover.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'));
-			(*players)[playerName].throwCount = 3;	//FOOD_POISONING_PENALTY
+			//(*players)[playerName].throwCount = 3;	//FOOD_POISONING_PENALTY
 		}
 		//disoriented
 		else if ((*players)[playerName].currentFloor == floor0 && 
@@ -603,8 +598,8 @@ void bawanaLogic(Player **players, Bawana **bawana, int playerName)
 			(*players)[playerName].currentWidth = bawanaEntrance[1];
 			(*players)[playerName].currentLength = bawanaEntrance[2];
 			(*players)[playerName].score += 50;		//TRIGGERED_PENALTY
-			(*players)[playerName].currentWidth *= 2;
-			(*players)[playerName].currentLength *= 2;
+			//(*players)[playerName].currentWidth *= 2;
+			//(*players)[playerName].currentLength *= 2;
 		}
 		//happy
 		else if (((*players)[playerName].currentFloor == floor0) && 
@@ -631,10 +626,28 @@ void bawanaLogic(Player **players, Bawana **bawana, int playerName)
 
 
 //check if the player is in standing area
-bool isInStandingArea(Player **players, int movementDiceValue)
+bool isInStandingArea(Player **players, int playerName)
 {
-	if(((*players)[A].currentFloor == floor0) && (((*players)[A].currentWidth >= standAreaWidthStart) && ((*players)[A].currentLength >= standAreaLengthStart && (*players)[A].currentLength <= standAreaLengthEnd)))
+	if(((*players)[playerName].currentFloor == floor0) && (((*players)[playerName].currentWidth >= standAreaWidthStart) && ((*players)[playerName].currentLength >= standAreaLengthStart && (*players)[playerName].currentLength <= standAreaLengthEnd)))
 	{
+		if (playerName == A)
+		{
+			(*players)[playerName].currentWidth = A_START[1];
+			(*players)[playerName].currentLength = A_START[2];
+		}
+		
+		if (playerName == B)
+		{
+			(*players)[playerName].currentWidth = B_START[1];
+			(*players)[playerName].currentLength = B_START[2];
+		}
+
+		if (playerName == C)
+		{
+			(*players)[playerName].currentWidth = C_START[1];
+			(*players)[playerName].currentLength = C_START[2];
+		}
+		
 		return true;
 	}
 	else
@@ -649,10 +662,11 @@ bool isPlayerEntersGame(Player **players, bool isInStandingArea, int playerName,
 {
 	if (isInStandingArea && (movementDiceValue == 6))
 	{
-		(*players)[playerName].isPlayerActive = true;
-		(*players)[playerName].currentFloor = A_START[0];
-		(*players)[playerName].currentWidth = A_START[1];
-		(*players)[playerName].currentLength = A_START[2];
+		(*players)[playerName].isEnteredGame = true;
+		(*players)[playerName].currentFloor = ((playerName == A) ? A_ENTER[0] : (playerName == B) ? B_ENTER[0] : C_ENTER[0]);
+		(*players)[playerName].currentWidth = ((playerName == A) ? A_ENTER[1] : (playerName == B) ? B_ENTER[1] : C_ENTER[1]);
+		(*players)[playerName].currentLength = ((playerName == A) ? A_ENTER[2] : (playerName == B) ? B_ENTER[2] : C_ENTER[2]);
+		(*players)[playerName].score = STARTING_POINTS;
 		printf("%c is at the starting area and rolls 6 on the movement dice and is placed on [%d,%d,%d] of the maze.\n", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), (*players)[playerName].currentFloor, (*players)[playerName].currentWidth, (*players)[playerName].currentLength);
 		return true;
 	}
@@ -666,32 +680,50 @@ bool isPlayerEntersGame(Player **players, bool isInStandingArea, int playerName,
 
 //check if a player has been captured
 int isPlayerCaptured(){
-	if ((players[A].currentFloor == players[B].currentFloor) && (players[A].currentWidth == players[B].currentWidth) && (players[A].currentLength == players[B].currentLength) && (players[A].isPlayerActive) && (!players[B].isPlayerActive))
+	if ((players[A].currentFloor == players[B].currentFloor) && 
+		(players[A].currentWidth == players[B].currentWidth) && 
+		(players[A].currentLength == players[B].currentLength) && 
+		(players[A].isPlayerActive && !players[B].isPlayerActive))
 	{
 		printf("Player B has been captured by Player A\n");
 		return B;
 	}
-	else if ((players[A].currentFloor == players[C].currentFloor) && (players[A].currentWidth == players[C].currentWidth) && (players[A].currentLength == players[C].currentLength) && (players[A].isPlayerActive) && (!players[C].isPlayerActive))
+	else if ((players[A].currentFloor == players[C].currentFloor) && 
+			(players[A].currentWidth == players[C].currentWidth) && 
+			(players[A].currentLength == players[C].currentLength) && 
+			(players[A].isPlayerActive && !players[C].isPlayerActive))
 	{
 		printf("Player C has been captured by Player A\n");
 		return C;
 	}
-	else if ((players[B].currentFloor == players[A].currentFloor) && (players[B].currentWidth == players[A].currentWidth) && (players[B].currentLength == players[A].currentLength) && (players[B].isPlayerActive) && (!players[A].isPlayerActive))
+	else if ((players[B].currentFloor == players[A].currentFloor) && 
+			(players[B].currentWidth == players[A].currentWidth) && 
+			(players[B].currentLength == players[A].currentLength) && 
+			(players[B].isPlayerActive && !players[A].isPlayerActive))
 	{
 		printf("Player A has been captured by Player B\n");
 		return A;
 	}
-	else if ((players[B].currentFloor == players[C].currentFloor) && (players[B].currentWidth == players[C].currentWidth) && (players[B].currentLength == players[C].currentLength) && (players[B].isPlayerActive) && (!players[C].isPlayerActive))
+	else if ((players[B].currentFloor == players[C].currentFloor) && 
+			(players[B].currentWidth == players[C].currentWidth) && 
+			(players[B].currentLength == players[C].currentLength) && 
+			(players[B].isPlayerActive && !players[C].isPlayerActive))
 	{
 		printf("Player C has been captured by Player B\n");
 		return C;
 	}
-	else if ((players[C].currentFloor == players[A].currentFloor) && (players[C].currentWidth == players[A].currentWidth) && (players[C].currentLength == players[A].currentLength) && (players[C].isPlayerActive) && (!players[A].isPlayerActive))
+	else if ((players[C].currentFloor == players[A].currentFloor) && 
+			(players[C].currentWidth == players[A].currentWidth) && 
+			(players[C].currentLength == players[A].currentLength) && 
+			(players[C].isPlayerActive && !players[A].isPlayerActive))
 	{
 		printf("Player A has been captured by Player C\n");
 		return A;
 	}
-	else if ((players[C].currentFloor == players[B].currentFloor) && (players[C].currentWidth == players[B].currentWidth) && (players[C].currentLength == players[B].currentLength) && (players[C].isPlayerActive) && (!players[B].isPlayerActive))
+	else if ((players[C].currentFloor == players[B].currentFloor) && 
+			(players[C].currentWidth == players[B].currentWidth) && 
+			(players[C].currentLength == players[B].currentLength) && 
+			(players[C].isPlayerActive && !players[B].isPlayerActive))
 	{
 		printf("Player B has been captured by Player C\n");
 		return B;
@@ -711,7 +743,7 @@ void capturedToStandingArea(int capturedPlayer)
 		players[A].currentFloor = floor0;
 		players[A].currentWidth = A_START[1];
 		players[A].currentLength = A_START[2];
-		players[A].isPlayerActive = false;
+		//players[A].isPlayerActive = false;
 		printf("Player A has been moved to the starting area [%d,%d,%d]\n", players[A].currentFloor, players[A].currentWidth, players[A].currentLength);
 	}
 	else if (capturedPlayer == B)
@@ -719,7 +751,7 @@ void capturedToStandingArea(int capturedPlayer)
 		players[B].currentFloor = floor0;
 		players[B].currentWidth = B_START[1];
 		players[B].currentLength = B_START[2];
-		players[B].isPlayerActive = false;
+		//players[B].isPlayerActive = false;
 		printf("Player B has been moved to the starting area [%d,%d,%d]\n", players[B].currentFloor, players[B].currentWidth, players[B].currentLength);
 	}
 	else if (capturedPlayer == C)
@@ -727,13 +759,13 @@ void capturedToStandingArea(int capturedPlayer)
 		players[C].currentFloor = floor0;
 		players[C].currentWidth = C_START[1];
 		players[C].currentLength = C_START[2];
-		players[C].isPlayerActive = false;
+		//players[C].isPlayerActive = false;
 		printf("Player C has been moved to the starting area [%d,%d,%d]\n", players[C].currentFloor, players[C].currentWidth, players[C].currentLength);
 	}
-	else
-	{
-		return;
-	}
+	//else
+	//{
+	//	return;
+	//}
 }
 
 
@@ -743,7 +775,7 @@ void capturedToStandingArea(int capturedPlayer)
 int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 {
 	int direction = players[playerName].direction;
-	int remainingMoves;
+	int remainingMoves = 0;
 	if (direction == NORTH)
 	{
 		for (int i = 0; i < stairs_count; i++)
@@ -762,7 +794,7 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 			}
 		}
 
-		return remainingMoves, direction;
+		return remainingMoves;
 		
 	}
 	else if (direction == EAST)
@@ -783,7 +815,7 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 			}
 		}
 		
-		return remainingMoves, direction;
+		return remainingMoves;
 		
 	}
 	else if (direction == SOUTH)
@@ -804,7 +836,7 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 			}
 		}
 
-		return remainingMoves, direction;
+		return remainingMoves;
 
 	}
 	else if (direction == WEST)
@@ -825,7 +857,7 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 			}
 		}
 
-		return remainingMoves, direction;
+		return remainingMoves;
 		
 	}
 
@@ -836,7 +868,8 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 void stairsLogic(Player **players, int playerName, int movementDiceValue)
 {
 	//[sf,sw,sl,ef,ew,el] => [start floor, start block width number, start block length number, end floor, end block width number, end block length number]
-	int remainingMoves, direction = remainingMovesIfStairInPath(playerName, movementDiceValue);
+	int remainingMoves = remainingMovesIfStairInPath(playerName, movementDiceValue);
+	int direction = (*players)[playerName].direction;
 	if (remainingMoves != 0)
 	{
 		if (direction == NORTH)
@@ -866,76 +899,41 @@ void stairsLogic(Player **players, int playerName, int movementDiceValue)
 //check if there is a wall in the path
 bool isWallInPath(int playerName, int movementDiceValue)
 {
-	int direction = (players)[playerName].direction;
-	if (direction == NORTH)
-	{
-		for (int i = 0; i < walls_count; i++)
-		{
-			if ((((players[playerName].currentWidth - movementDiceValue) <= walls[i].startWidth) || ((players[playerName].currentWidth - movementDiceValue) <= walls[i].endWidth)) && 
-				(players[playerName].currentFloor == walls[i].floor))
-			{
-				break;
-			}
-		
-		}
-		
-		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
-		return true;
-	}
-	else if (direction == EAST)
-	{
-		for (int i = 0; i < walls_count; i++)
-		{
-			if ((((players[playerName].currentLength + movementDiceValue) >= walls[i].startLength) || ((players[playerName].currentLength + movementDiceValue) <= walls[i].endLength)) && 
-				(players[playerName].currentFloor == walls[i].floor))
-			{
-				break;
-			}
-		
-		}
-		
-		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
-		return true;
-	}
-	else if (direction == SOUTH)
-	{
-		for (int i = 0; i < walls_count; i++)
-		{
-			if ((((players[playerName].currentWidth + movementDiceValue) >= walls[i].startWidth) || ((players[playerName].currentWidth + movementDiceValue) >= walls[i].endWidth)) && 
-				(players[playerName].currentFloor == walls[i].floor))
-			{
-				break;
-			}
-		
-		}
-		
-		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
-		return true;
-	}
-	else if (direction == WEST)
-	{
-		for (int i = 0; i < walls_count; i++)
-		{
-			if ((((players[playerName].currentLength - movementDiceValue) <= walls[i].startLength) || ((players[playerName].currentLength - movementDiceValue) <= walls[i].endLength)) && 
-				(players[playerName].currentFloor == walls[i].floor))
-			{
-				break;
-			}
-		
-		}
-		
-		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
-		return true;
-	}
+    int direction = players[playerName].direction;
+    for (int i = 0; i < walls_count; i++)
+    {
+        if (direction == NORTH) {
+            if (((players[playerName].currentWidth - movementDiceValue) <= walls[i].startWidth || (players[playerName].currentWidth - movementDiceValue) <= walls[i].endWidth) &&
+                (players[playerName].currentFloor == walls[i].floor)) {
+                return true;
+            }
+        } else if (direction == EAST) {
+            if (((players[playerName].currentLength + movementDiceValue) >= walls[i].startLength && (players[playerName].currentLength + movementDiceValue) <= walls[i].endLength) &&
+                (players[playerName].currentFloor == walls[i].floor)) {
+                return true;
+            }
+        } else if (direction == SOUTH) {
+            if (((players[playerName].currentWidth + movementDiceValue) >= walls[i].startWidth && (players[playerName].currentWidth + movementDiceValue) <= walls[i].endWidth) &&
+                (players[playerName].currentFloor == walls[i].floor)) {
+                return true;
+            }
+        } else if (direction == WEST) {
+            if (((players[playerName].currentLength - movementDiceValue) <= walls[i].startLength || (players[playerName].currentLength - movementDiceValue) <= walls[i].endLength) &&
+                (players[playerName].currentFloor == walls[i].floor)) {
+                return true;
+            }
+        }
+    }
 
+    return false;
 }
 
 
 //check if there is a pole in the path
-void PoleInPath(int playerName, int movementDiceValue)
+void poleInPath(int playerName, int movementDiceValue)
 {
 	int direction = (players)[playerName].direction;
-	int remainingMoves;
+	int remainingMoves = 0;
 	if (direction == NORTH)
 	{
 		for (int i = 0; i < poles_count; i++)
@@ -948,7 +946,7 @@ void PoleInPath(int playerName, int movementDiceValue)
 				players[playerName].currentLength = poles[i].length ;
 				players[playerName].currentWidth = poles[i].width;
 
-				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				printf("%c lands on [%d,%d,%d] which is a pole cell.\n", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
 				break;
 			}
 			
@@ -971,7 +969,7 @@ void PoleInPath(int playerName, int movementDiceValue)
 				players[playerName].currentLength = poles[i].length ;
 				players[playerName].currentWidth = poles[i].width;
 
-				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				printf("%c lands on [%d,%d,%d] which is a pole cell.\n", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
 				break;
 			}
 		}
@@ -993,7 +991,7 @@ void PoleInPath(int playerName, int movementDiceValue)
 				players[playerName].currentLength = poles[i].length ;
 				players[playerName].currentWidth = poles[i].width;
 
-				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				printf("%c lands on [%d,%d,%d] which is a pole cell.\n", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
 				break;
 			}
 		}
@@ -1014,7 +1012,7 @@ void PoleInPath(int playerName, int movementDiceValue)
 				players[playerName].currentLength = poles[i].length ;
 				players[playerName].currentWidth = poles[i].width;
 
-				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				printf("%c lands on [%d,%d,%d] which is a pole cell.\n", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
 				break;
 			}
 		}
@@ -1035,7 +1033,7 @@ bool isAtFloorBoundary(Player **players, int playerName, int directionDiceValue,
 
 	if (playerFloor == floor0)
 	{
-		if (playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength < 0 || playerLength > MAX_LENGTH || isInStandingArea(players, movementDiceValue))
+		if (playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength < 0 || playerLength > MAX_LENGTH || (isInStandingArea(players, playerName) && (*players)[playerName].isPlayerActive))
 		{
 			return true;
 		}
@@ -1044,9 +1042,10 @@ bool isAtFloorBoundary(Player **players, int playerName, int directionDiceValue,
 			return false;
 		}
 	}
-	else if (playerFloor == floor1)
+	
+	if (playerFloor == floor1)
 	{
-		if (playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength < 0 || playerLength > MAX_LENGTH || ((playerWidth >= f1DisabledWidthStart && playerWidth <= f1DisabledWidthEnd) && (playerLength >= f1DisabledLengthStart && playerLength <= f1DisabledLengthEnd)))
+		if ((playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength < 0 || playerLength > MAX_LENGTH || ((playerWidth >= f1DisabledWidthStart && playerWidth <= f1DisabledWidthEnd) && (playerLength >= f1DisabledLengthStart && playerLength <= f1DisabledLengthEnd))) && (*players)[playerName].isPlayerActive)
 		{
 			return true;
 		}
@@ -1055,9 +1054,10 @@ bool isAtFloorBoundary(Player **players, int playerName, int directionDiceValue,
 			return false;
 		}
 	}
-	else if (playerFloor == floor2)
+	
+	if (playerFloor == floor2)
 	{
-		if (playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength <= f2DisabledLengthEnd_1 || playerLength >= f2DisabledLengthStart_2)
+		if ((playerWidth < 0 || playerWidth > MAX_WIDTH || playerLength <= f2DisabledLengthEnd_1 || playerLength >= f2DisabledLengthStart_2) && (*players)[playerName].isPlayerActive)
 		{
 			return true;
 		}
@@ -1072,61 +1072,353 @@ bool isAtFloorBoundary(Player **players, int playerName, int directionDiceValue,
 
 int play()
 {
-	loadFlag(&flag);		//memory has been allocated for flag
-	loadStairs(&stairs);	//memory has been allocated for stairs
-	loadPoles(&poles);		//memory has been allocated for poles
-	loadWalls(&walls);		//memory has been allocated for walls
-	loadSeed(&seed);		//memory has been allocated for seed
-	loadPlayers(&players);	//memory has been allocated for players
-	init_srand(seed->seed);	//initializing srand or random number generation
+    loadFlag(&flag);		//memory has been allocated for flag
+    loadStairs(&stairs);	//memory has been allocated for stairs
+    loadPoles(&poles);		//memory has been allocated for poles
+    loadWalls(&walls);		//memory has been allocated for walls
+    loadSeed(&seed);		//memory has been allocated for seed
+    loadPlayers(&players);	//memory has been allocated for players
+    init_srand(seed->seed);	//initializing srand for random number generation
 
-	printf("Seed: %u\n", seed->seed);
-	initBawana(&bawana);		//memory has been allocated for bawana
+    printf("Seed: %u\n", seed->seed);
+    initBawana(&bawana);		//memory has been allocated for bawana
 
-	displayFloor();
+    displayFloor();
 
-	printf("\n");
+    printf("\n");
 
-	printf("!Flag position = [%d,%d,%d]\n", flag->floor, flag->width, flag->length);
+    printf("!Flag position = [%d,%d,%d]\n", flag->floor, flag->width, flag->length);
 
-	printf("\n");
+    printf("\n");
 
-	//print loaded data for verification
+	//if (isInStandingArea(&players, C))
+	//{
+	//	printf("[%d,%d,%d]\n", players[C].currentFloor, players[C].currentWidth, players[C].currentLength);
+	//}
+	
+
+    //print loaded data for verification
 /*
-	for (int x = 0; x < stairs_count; x++){
-		printf("\t%d,%d,%d,%d,%d,%d\n", stairs[x].startFloor, stairs[x].startWidth, stairs[x].startLength, stairs[x].endFloor, stairs[x].endWidth, stairs[x].endLength);
-	}
+    for (int x = 0; x < stairs_count; x++){
+        printf("\t%d,%d,%d,%d,%d,%d\n", stairs[x].startFloor, stairs[x].startWidth, stairs[x].startLength, stairs[x].endFloor, stairs[x].endWidth, stairs[x].endLength);
+    }
 */
 /*
-	for (int y = 0; y < walls_count; y++){
-		printf("\t%d,%d,%d,%d,%d\n", walls[y].floor, walls[y].startWidth, walls[y].startLength, walls[y].endWidth, walls[y].endLength);
-	}
+    for (int y = 0; y < walls_count; y++){
+        printf("\t%d,%d,%d,%d,%d\n", walls[y].floor, walls[y].startWidth, walls[y].startLength, walls[y].endWidth, walls[y].endLength);
+    }
 */
 /*
-	for (int z = 0; z < poles_count; z++){
-		printf("\t%d,%d,%d,%d\n", poles[z].startFloor, poles[z].endFloor, poles[z].width, poles[z].length);
-	}
+    for (int z = 0; z < poles_count; z++){
+        printf("\t%d,%d,%d,%d\n", poles[z].startFloor, poles[z].endFloor, poles[z].width, poles[z].length);
+    }
 */	
-
-	/*for (int i = 0; i < 3; i++)
-	{
-		printf("FoodPoisoning: %d, Disoriented: %d, Triggered: %d, Happy: %d\n", bawana->FoodPoisoning[i], bawana->Disoriented[i], bawana->Triggered[i], bawana->Happy[i]);
-	}*/
 /*
-	for (int i = 0; i < MAX_PLAYERS; i++)
-	{
-		printf("Player %c: Direction: %d, Floor: %d, Width: %d, Length: %d, Active: %d, ThrowCount: %d, Score: %d\n", ((i == A) ? 'A' : (i == B) ? 'B' : 'C'), players[i].direction, players[i].currentFloor, players[i].currentWidth, players[i].currentLength, players[i].isPlayerActive, players[i].throwCount, players[i].score);
-	}
-*/	
+    for (int i = 0; i < 3; i++)
+    {
+        printf("FoodPoisoning: %d, Disoriented: %d, Triggered: %d, Happy: %d\n", bawana->FoodPoisoning_1[i], bawana->Disoriented_1[i], bawana->Triggered_1[i], bawana->Happy_1[i]);
+    }
+*/
+/*
+    for (int i = 0; i < MAX_PLAYERS; i++)
+    {
+        printf("Player %c: Direction: %d, Floor: %d, Width: %d, Length: %d, Active: %d, ThrowCount: %d, Score: %d\n", ((i == A) ? 'A' : (i == B) ? 'B' : 'C'), players[i].direction, players[i].currentFloor, players[i].currentWidth, players[i].currentLength, players[i].isPlayerActive, players[i].throwCount, players[i].score);
+    }
+*/
 
-	//freeing up the allocated memory
-	free(stairs);
-	free(poles);
-	free(walls);
-	free(seed);
-	free(players);
-	free(bawana);
-	free(flag);
+
+// Updated game loop implementation using your existing functions and header definitions
+// Replace the existing return 0; with this game loop
+
+	bool gameOver = false;
+	int gameRound = 1;
+	int foodPoisonTurns[MAX_PLAYERS] = {0, 0, 0}; // Track food poison turns for each player
+	int disorientedTurns[MAX_PLAYERS] = {0, 0, 0}; // Track disoriented turns
+	bool isTriggered[MAX_PLAYERS] = {false, false, false}; // Track triggered state
+	
+	printf("\n=== GAME STARTS ===\n");
+	
+	while (!gameOver) {
+	    printf("\n--- Round %d ---\n", gameRound);
+	
+	    // Each player takes their turn
+	    for (currentPlayer = 0; currentPlayer < MAX_PLAYERS && !gameOver; currentPlayer++) {
+	        char playerName = (currentPlayer == A) ? 'A' : (currentPlayer == B) ? 'B' : 'C';
+		
+	        printf("\nPlayer %c's turn:\n", playerName);
+		
+	        // Check if player is food poisoned (skip turn if so)
+	        if (foodPoisonTurns[currentPlayer] > 0) {
+	            printf("%c is still food poisoned and misses the turn.\n", playerName);
+	            foodPoisonTurns[currentPlayer]--;
+			
+	            if (foodPoisonTurns[currentPlayer] == 0) {
+	                printf("%c is now fit to proceed from the food poisoning episode and now placed on a random Bawana cell and the effects take place.\n", playerName);
+	                // Place player in Bawana and apply random cell effects
+	                players[currentPlayer].currentFloor = 0;
+	                players[currentPlayer].currentWidth = rand_int(7, 9);
+	                players[currentPlayer].currentLength = rand_int(21, 24);
+	                bawanaLogic(&players, &bawana, currentPlayer);
+	            }
+	            continue;
+	        }
+		
+	        // Roll movement dice
+	        int movementRoll = movementDice();
+	        int directionRoll = 0;
+	        bool rollDirectionDice = false;
+		
+	        // Check if we need to roll direction dice (every 4th throw after entering maze)
+	        if (players[currentPlayer].isEnteredGame && (players[currentPlayer].throwCount % 4 == 3)) {
+	            directionRoll = directionDice();
+	            rollDirectionDice = true;
+	        }
+		
+	        // Check if player is in starting area
+	        if (isInStandingArea(&players, currentPlayer)) {
+	            if (isPlayerEntersGame(&players, true, currentPlayer, movementRoll)) {
+	                // Player entered the maze
+	                players[currentPlayer].isPlayerActive = true;
+	                players[currentPlayer].isEnteredGame = true;
+	                players[currentPlayer].throwCount = 1; // First throw after entering
+	            }
+	            continue;
+	        }
+		
+	        // Player is in the maze - process movement
+	        if (players[currentPlayer].isPlayerActive) {
+	            players[currentPlayer].throwCount++;
+			
+	            // Store original position
+	            int originalFloor = players[currentPlayer].currentFloor;
+	            int originalWidth = players[currentPlayer].currentWidth;
+	            int originalLength = players[currentPlayer].currentLength;
+			
+	            // Update direction if direction dice was rolled
+	            if (rollDirectionDice) {
+	                switch(directionRoll) 
+					{
+	                    case 2: players[currentPlayer].direction = NORTH; break;
+	                    case 3: players[currentPlayer].direction = EAST; break;
+	                    case 4: players[currentPlayer].direction = SOUTH; break;
+	                    case 5: players[currentPlayer].direction = WEST; break;
+	                    // Cases 1 and 6 are empty - keep current direction
+	                }
+				
+	                char* directionName = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                    (players[currentPlayer].direction == EAST) ? "East" :
+	                                    (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+				
+	                char* diceDirection = (directionRoll == 1 || directionRoll == 6) ? "empty" : 
+	                                    (directionRoll == 2) ? "North" :
+	                                    (directionRoll == 3) ? "East" :
+	                                    (directionRoll == 4) ? "South" : "West";
+				
+	                printf("%c rolls %d on the movement dice and %s on the direction dice, changes direction to %s", 
+	                       playerName, movementRoll, diceDirection, directionName);
+	            } 
+				else 
+				{
+	                char* directionName = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                    (players[currentPlayer].direction == EAST) ? "East" :
+	                                    (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+				
+	                printf("%c rolls %d on the movement dice and moves %s", 
+	                       playerName, movementRoll, directionName);
+	            }
+			
+	            // Check for walls blocking movement
+	            if (isWallInPath(currentPlayer, movementRoll)) 
+				{
+	                char* directionName = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                    (players[currentPlayer].direction == EAST) ? "East" :
+	                                    (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+				
+	                printf(" and cannot move in the %s. Player remains at [%d,%d,%d]\n", 
+	                       directionName, originalFloor, originalWidth, originalLength);
+					
+	                // Deduct movement points for blocked movement
+	                players[currentPlayer].score -= MOVEMENT_COST;
+					
+	                char* currentDirection = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                       (players[currentPlayer].direction == EAST) ? "East" :
+	                                       (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+					
+	                printf("%c moved 0 cells that cost %d movement points and is left with %d movement points and is moving in the %s.\n", 
+	                       playerName, MOVEMENT_COST, players[currentPlayer].score, currentDirection);
+	            } 
+				else 
+				{
+	                // Calculate new position based on direction
+	                int newWidth = originalWidth;
+	                int newLength = originalLength;
+	                int cellsMoved = movementRoll;
+				
+	                // Handle triggered state (move twice as fast)
+	                if (isTriggered[currentPlayer]) 
+					{
+	                    cellsMoved = movementRoll * 2;
+	                    printf("%c is triggered and ", playerName);
+	                }
+				
+	                // Handle disoriented state (random direction)
+	                if (disorientedTurns[currentPlayer] > 0) 
+					{
+	                    players[currentPlayer].direction = rand_int(1, 4); // Random direction 1-4 (NORTH-WEST)
+	                    players[currentPlayer].direction++; // Adjust to match enum values 2-5
+	                    disorientedTurns[currentPlayer]--;
+					
+	                    char* randomDirection = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                          (players[currentPlayer].direction == EAST) ? "East" :
+	                                          (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+					
+	                    printf("%c is disoriented and moves in the %s", playerName, randomDirection);
+					
+	                    if (disorientedTurns[currentPlayer] == 0) 
+						{
+	                        printf("\n%c has recovered from disorientation.\n", playerName);
+	                    }
+	                }
+				
+	                switch(players[currentPlayer].direction) 
+					{
+	                    case NORTH:
+	                        newWidth -= cellsMoved;
+	                        break;
+	                    case EAST:
+	                        newLength += cellsMoved;
+	                        break;
+	                    case SOUTH:
+	                        newWidth += cellsMoved;
+	                        break;
+	                    case WEST:
+	                        newLength -= cellsMoved;
+	                        break;
+	                }
+				
+	                // Check floor boundaries and restrictions
+	                bool validMove = true;
+	                if (newWidth < 0 || newWidth > MAX_WIDTH || newLength < 0 || newLength > MAX_LENGTH) 
+					{
+	                    validMove = false;
+	                }
+				
+	                // Check if player would enter disabled areas
+	                if (validMove && !isAtFloorBoundary(&players, currentPlayer, 0, cellsMoved)) 
+					{
+	                    // Update player position
+	                    players[currentPlayer].currentWidth = newWidth;
+	                    players[currentPlayer].currentLength = newLength;
+					
+	                    printf(" and moves %d cells and is now at [%d,%d,%d].\n", 
+	                           cellsMoved, players[currentPlayer].currentFloor, newWidth, newLength);
+						
+	                    // Check for stairs in the path - use your existing function
+	                    int remainingMoves = remainingMovesIfStairInPath(currentPlayer, cellsMoved);
+	                    if (remainingMoves > 0) 
+						{
+	                        stairsLogic(&players, currentPlayer, cellsMoved);
+	                    }
+					
+	                    // Check for poles in the path - use your existing function  
+	                    poleInPath(currentPlayer, cellsMoved);
+					
+	                    // Calculate movement cost (you'll need to implement cell values)
+	                    int movementCost = cellsMoved * 1; // Placeholder - implement actual cell value system
+	                    players[currentPlayer].score -= movementCost;
+					
+	                } 
+					else 
+					{
+	                    printf(" but cannot complete the movement due to boundaries. Player remains at [%d,%d,%d]\n", 
+	                           originalFloor, originalWidth, originalLength);
+						
+	                    // Still deduct movement points for attempted movement
+	                    players[currentPlayer].score -= MOVEMENT_COST;
+	                }
+				
+	                char* currentDirection = (players[currentPlayer].direction == NORTH) ? "North" : 
+	                                       (players[currentPlayer].direction == EAST) ? "East" :
+	                                       (players[currentPlayer].direction == SOUTH) ? "South" : "West";
+				
+	                printf("%c moved %d cells that cost %d movement points and is left with %d movement points and is moving in the %s.\n", 
+	                       playerName, (validMove ? cellsMoved : 0), 
+	                       (validMove ? cellsMoved : MOVEMENT_COST), 
+	                       players[currentPlayer].score, currentDirection);
+	            }
+			
+	            // Check if player reached the flag
+	            if (players[currentPlayer].currentFloor == flag->floor && 
+	                players[currentPlayer].currentWidth == flag->width && 
+	                players[currentPlayer].currentLength == flag->length) 
+				{
+					
+	                printf("\n*** GAME OVER! Player %c has captured the flag! ***\n", playerName);
+	                gameOver = true;
+	                break;
+	            }
+			
+	            // Check for player captures using your existing function
+	            int capturedPlayer = isPlayerCaptured();
+	            if (capturedPlayer != -1) 
+				{
+	                capturedToStandingArea(capturedPlayer);
+	            }
+			
+	            // Check if player needs to be transported to Bawana (movement points <= 0)
+	            if (players[currentPlayer].score <= 0) 
+				{
+	                printf("%c movement points are depleted and requires replenishment. Transporting to Bawana.\n", playerName);
+	                players[currentPlayer].currentFloor = 0;
+	                players[currentPlayer].currentWidth = rand_int(7, 9);
+	                players[currentPlayer].currentLength = rand_int(21, 24);
+	                bawanaLogic(&players, &bawana, currentPlayer);
+	            }
+			
+	            // Check if player entered Bawana area
+	            if (isInBawana(&players, currentPlayer)) 
+				{
+	                bawanaLogic(&players, &bawana, currentPlayer);
+	            }
+			
+	            // Check if player fell back to starting area
+	            if (isInStandingArea(&players, currentPlayer)) 
+				{
+	                players[currentPlayer].isPlayerActive = false;
+	                players[currentPlayer].isEnteredGame = false;
+	                printf("%c has returned to the starting area.\n", playerName);
+	            }
+	        }
+	    }
+	
+	    gameRound++;
+	
+	    // Optional: Add a maximum number of rounds to prevent infinite games
+	    //if (gameRound > 1000) {
+	    //    printf("\nGame ended due to maximum rounds reached.\n");
+	    //    gameOver = true;
+	    //}
+
+		printf("A: [%d,%d,%d]\n", players[A].currentFloor, players[A].currentWidth, players[A].currentLength);
+		printf("B: [%d,%d,%d]\n", players[B].currentFloor, players[B].currentWidth, players[B].currentLength);
+		printf("C: [%d,%d,%d]\n", players[C].currentFloor, players[C].currentWidth, players[C].currentLength);
+		
+		printf("A points: %d\n", players[A].score);
+		printf("B points: %d\n", players[B].score);
+		printf("C points: %d\n", players[C].score);
+
+
+	}
+
+
+    //freeing up the allocated memory
+    free(stairs);
+    free(poles);
+    free(walls);
+    free(seed);
+    free(players);
+    free(bawana);
+    free(flag);
 
 	return 0;
 }

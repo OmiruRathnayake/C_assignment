@@ -752,11 +752,11 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 				(players[playerName].currentLength == stairs[i].startLength) && 
 				(players[playerName].currentFloor == stairs[i].startFloor))
 			{
-				remainingMoves = movementDiceValue - (stairs[i].startWidth - players[playerName].currentWidth);
+				remainingMoves = movementDiceValue - (players[playerName].currentWidth - stairs[i].startWidth) - 1;
 				players[playerName].currentFloor = stairs[i].endFloor;
 				players[playerName].currentWidth = stairs[i].endWidth;
 				players[playerName].currentLength = stairs[i].endLength;
-				printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
+				//printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
 
 				break;
 			}
@@ -773,11 +773,11 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 				(players[playerName].currentWidth == stairs[i].startWidth) && 
 				(players[playerName].currentFloor == stairs[i].startFloor))
 			{
-				remainingMoves = movementDiceValue - (stairs[i].startLength - players[playerName].currentLength);
+				remainingMoves = movementDiceValue - (stairs[i].startLength - players[playerName].currentLength) - 1;
 				players[playerName].currentFloor = stairs[i].endFloor;
 				players[playerName].currentWidth = stairs[i].endWidth;
 				players[playerName].currentLength = stairs[i].endLength;
-				printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
+				//printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
 
 				break;
 			}
@@ -794,11 +794,11 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 				(players[playerName].currentLength == stairs[i].startLength) && 
 				(players[playerName].currentFloor == stairs[i].startFloor))
 			{
-				remainingMoves = movementDiceValue - (players[playerName].currentWidth - stairs[i].startWidth);
+				remainingMoves = movementDiceValue - (stairs[i].startWidth - players[playerName].currentWidth) - 1;
 				players[playerName].currentFloor = stairs[i].endFloor;
 				players[playerName].currentWidth = stairs[i].endWidth;
 				players[playerName].currentLength = stairs[i].endLength;
-				printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
+				//printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
 				
 				break;
 			}
@@ -815,11 +815,11 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 				(players[playerName].currentWidth == stairs[i].startWidth) && 
 				(players[playerName].currentFloor == stairs[i].startFloor))
 			{
-				remainingMoves = movementDiceValue - (players[playerName].currentLength - stairs[i].startLength);
+				remainingMoves = movementDiceValue - (players[playerName].currentLength - stairs[i].startLength) - 1;
 				players[playerName].currentFloor = stairs[i].endFloor;
 				players[playerName].currentWidth = stairs[i].endWidth;
 				players[playerName].currentLength = stairs[i].endLength;
-				printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
+				//printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].startFloor, stairs[i].startWidth, stairs[i].startLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), stairs[i].endFloor, stairs[i].endWidth, stairs[i].endLength, stairs[i].endFloor);
 				
 				break;
 			}
@@ -833,38 +833,196 @@ int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
 
 
 //Stairs logic
-int stairsLogic(Player **players, int playerName, int movementDiceValue)
+void stairsLogic(Player **players, int playerName, int movementDiceValue)
 {
 	//[sf,sw,sl,ef,ew,el] => [start floor, start block width number, start block length number, end floor, end block width number, end block length number]
 	int remainingMoves, direction = remainingMovesIfStairInPath(playerName, movementDiceValue);
+	if (remainingMoves != 0)
+	{
+		if (direction == NORTH)
+		{
+			(*players)[playerName].currentWidth -= remainingMoves;
+		}
+		else if (direction == EAST)
+		{
+			(*players)[playerName].currentLength += remainingMoves;
+		}
+		else if (direction == SOUTH)
+		{
+			(*players)[playerName].currentWidth += remainingMoves;
+		}
+		else if (direction == WEST)
+		{
+			(*players)[playerName].currentLength -= remainingMoves;
+		}
+		
+	}
+	
 	printf("%c lands on [%d,%d,%d] which is a stair cell. %c takes the stairs and now placed at [%d,%d,%d] in floor %d.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), (*players)[playerName].currentFloor, (*players)[playerName].currentWidth, (*players)[playerName].currentLength, ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), (*players)[playerName].currentFloor, (*players)[playerName].currentWidth, (*players)[playerName].currentLength, (*players)[playerName].currentFloor);
+
 }
 
 
 //check if there is a wall in the path
-bool isWallInPath(int playerFloor, int playerWidth, int playerLength, int directionDiceValue, int movementDiceValue)
+bool isWallInPath(int playerName, int movementDiceValue)
 {
-	if (directionDiceValue == 1 || directionDiceValue == 6)
+	int direction = (players)[playerName].direction;
+	if (direction == NORTH)
 	{
-		/* code */
+		for (int i = 0; i < walls_count; i++)
+		{
+			if ((((players[playerName].currentWidth - movementDiceValue) <= walls[i].startWidth) || ((players[playerName].currentWidth - movementDiceValue) <= walls[i].endWidth)) && 
+				(players[playerName].currentFloor == walls[i].floor))
+			{
+				break;
+			}
+		
+		}
+		
+		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
+		return true;
 	}
-	else if (directionDiceValue == 2)
+	else if (direction == EAST)
 	{
-		/* code */
+		for (int i = 0; i < walls_count; i++)
+		{
+			if ((((players[playerName].currentLength + movementDiceValue) >= walls[i].startLength) || ((players[playerName].currentLength + movementDiceValue) <= walls[i].endLength)) && 
+				(players[playerName].currentFloor == walls[i].floor))
+			{
+				break;
+			}
+		
+		}
+		
+		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
+		return true;
 	}
-	else if (directionDiceValue == 3)
+	else if (direction == SOUTH)
 	{
-		/* code */
+		for (int i = 0; i < walls_count; i++)
+		{
+			if ((((players[playerName].currentWidth + movementDiceValue) >= walls[i].startWidth) || ((players[playerName].currentWidth + movementDiceValue) >= walls[i].endWidth)) && 
+				(players[playerName].currentFloor == walls[i].floor))
+			{
+				break;
+			}
+		
+		}
+		
+		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
+		return true;
 	}
-	else if (directionDiceValue == 4)
+	else if (direction == WEST)
 	{
-		/* code */
-	}
-	else if (directionDiceValue == 5)
-	{
-		/* code */
+		for (int i = 0; i < walls_count; i++)
+		{
+			if ((((players[playerName].currentLength - movementDiceValue) <= walls[i].startLength) || ((players[playerName].currentLength - movementDiceValue) <= walls[i].endLength)) && 
+				(players[playerName].currentFloor == walls[i].floor))
+			{
+				break;
+			}
+		
+		}
+		
+		printf("%c rolls and %d on the movement dice and cannot move in the %c. Player remains at [%d,%d,%d]", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), movementDiceValue, ((direction == NORTH) ? 'N' : (direction == EAST) ? 'E' : (direction == SOUTH) ? 'S' : 'W'), players[playerName].currentFloor, players[playerName].currentWidth, players[playerName].currentLength);
+		return true;
 	}
 
+}
+
+
+//check if there is a pole in the path
+void PoleInPath(int playerName, int movementDiceValue)
+{
+	int direction = (players)[playerName].direction;
+	int remainingMoves;
+	if (direction == NORTH)
+	{
+		for (int i = 0; i < poles_count; i++)
+		{
+			if ((players[playerName].currentFloor == poles[i].endFloor) && 
+				((players[playerName].currentWidth - movementDiceValue) <= poles[i].width))
+			{
+				remainingMoves = movementDiceValue - (players[playerName].currentWidth - poles[i].width) - 1;
+				players[playerName].currentFloor = poles[i].endFloor;
+				players[playerName].currentLength = poles[i].length ;
+				players[playerName].currentWidth = poles[i].width;
+
+				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				break;
+			}
+			
+		}
+
+		players[playerName].currentWidth -= remainingMoves;
+
+		printf("%c slides down and now placed at [%d,%d,%d] in floor %d.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), players[playerName].currentFloor, players[playerName].currentLength, players[playerName].currentWidth, players[playerName].currentFloor);
+
+	}
+	else if (direction == EAST)
+	{
+		for (int i = 0; i < poles_count; i++)
+		{
+			if ((players[playerName].currentFloor == poles[i].endFloor) && 
+				((players[playerName].currentLength + movementDiceValue) >= poles[i].length))
+			{
+				remainingMoves = movementDiceValue - (poles[i].length - players[playerName].currentLength) - 1;
+				players[playerName].currentFloor = poles[i].endFloor;
+				players[playerName].currentLength = poles[i].length ;
+				players[playerName].currentWidth = poles[i].width;
+
+				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				break;
+			}
+		}
+
+		players[playerName].currentLength += remainingMoves;
+
+		printf("%c slides down and now placed at [%d,%d,%d] in floor %d.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), players[playerName].currentFloor, players[playerName].currentLength, players[playerName].currentWidth, players[playerName].currentFloor);
+
+	}
+	else if (direction == SOUTH)
+	{
+		for (int i = 0; i < poles_count; i++)
+		{
+			if ((players[playerName].currentFloor == poles[i].endFloor) && 
+				((players[playerName].currentWidth + movementDiceValue) >= poles[i].width))
+			{
+				remainingMoves = movementDiceValue - (poles[i].width - players[playerName].currentWidth) - 1;
+				players[playerName].currentFloor = poles[i].endFloor;
+				players[playerName].currentLength = poles[i].length ;
+				players[playerName].currentWidth = poles[i].width;
+
+				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				break;
+			}
+		}
+		players[playerName].currentWidth += remainingMoves;
+
+		printf("%c slides down and now placed at [%d,%d,%d] in floor %d.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), players[playerName].currentFloor, players[playerName].currentLength, players[playerName].currentWidth, players[playerName].currentFloor);
+
+	}
+	else if (direction == WEST)
+	{
+		for (int i = 0; i < poles_count; i++)
+		{
+			if ((players[playerName].currentFloor == poles[i].endFloor) && 
+				((players[playerName].currentLength - movementDiceValue) <= poles[i].length))
+			{
+				remainingMoves = movementDiceValue - (players[playerName].currentLength - poles[i].length) - 1;
+				players[playerName].currentFloor = poles[i].endFloor;
+				players[playerName].currentLength = poles[i].length ;
+				players[playerName].currentWidth = poles[i].width;
+
+				printf("%c lands on [%d,%d,%d] which is a pole cell.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), poles[i].startFloor, poles[i].width, poles[i].length); 
+				break;
+			}
+		}
+		players[playerName].currentLength -= remainingMoves;
+
+		printf("%c slides down and now placed at [%d,%d,%d] in floor %d.", ((playerName == A) ? 'A' : (playerName == B) ? 'B' : 'C'), players[playerName].currentFloor, players[playerName].currentLength, players[playerName].currentWidth, players[playerName].currentFloor);
+
+	}
 }
 
 

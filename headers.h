@@ -71,6 +71,7 @@ typedef struct
 	unsigned int seed;
 }Seed;
 
+
 //Player
 typedef struct
 {
@@ -79,6 +80,7 @@ typedef struct
 	int currentWidth;
 	int currentLength;
 	bool isPlayerActive;
+	bool isEnteredGame;
 	int throwCount;
 	int score;
 }Player;
