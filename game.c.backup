@@ -16,7 +16,8 @@
 #define A 0
 #define B 1
 #define C 2
-#define GAMEOVER 0
+#define GAMEOVER true
+#define MAX_SCORE 250
 
 Stairs *stairs;
 Poles *poles;
@@ -1186,9 +1187,7 @@ int play()
 */
 
 
-// Updated game loop implementation using your existing functions and header definitions
-// Replace the existing return 0; with this game loop
-	bool gameOver = false;
+	bool gameOver = !GAMEOVER;
 	int gameRound = 1;
 	int foodPoisonTurns[MAX_PLAYERS] = {0, 0, 0}; // Track food poison turns for each player
 	int disorientedTurns[MAX_PLAYERS] = {0, 0, 0}; // Track disoriented turns

@@ -999,7 +999,8 @@ void poleInPath(int playerName, int movementDiceValue)
 		for (int i = 0; i < poles_count; i++)
 		{
 			if ((players[playerName].currentFloor == poles[i].startFloor) && 
-				((players[playerName].currentWidth - movementDiceValue) <= poles[i].width))
+				((poles[i].width >= (players[playerName].currentWidth - movementDiceValue)) && (poles->width <= players[playerName].currentWidth)) &&
+				(players[playerName].currentLength == poles[i].length))
 			{
 				remainingMoves = movementDiceValue - (players[playerName].currentWidth - poles[i].width) - 1;
 				players[playerName].currentFloor = poles[i].endFloor;
@@ -1022,7 +1023,8 @@ void poleInPath(int playerName, int movementDiceValue)
 		for (int i = 0; i < poles_count; i++)
 		{
 			if ((players[playerName].currentFloor == poles[i].startFloor) && 
-				((players[playerName].currentLength + movementDiceValue) >= poles[i].length))
+				((poles[i].length >= players[playerName].currentLength) && (poles[i].length <= (players[playerName].currentLength + movementDiceValue))) && 
+				(players[playerName].currentWidth == poles[i].width))
 			{
 				remainingMoves = movementDiceValue - (poles[i].length - players[playerName].currentLength) - 1;
 				players[playerName].currentFloor = poles[i].endFloor;
@@ -1044,7 +1046,8 @@ void poleInPath(int playerName, int movementDiceValue)
 		for (int i = 0; i < poles_count; i++)
 		{
 			if ((players[playerName].currentFloor == poles[i].startFloor) && 
-				((players[playerName].currentWidth + movementDiceValue) >= poles[i].width))
+				((poles[i].width >= players[playerName].currentWidth) && (poles[i].width <= (players[playerName].currentWidth + movementDiceValue))) && 
+				(players[playerName].currentLength == poles[i].length))
 			{
 				remainingMoves = movementDiceValue - (poles[i].width - players[playerName].currentWidth) - 1;
 				players[playerName].currentFloor = poles[i].endFloor;
@@ -1065,7 +1068,8 @@ void poleInPath(int playerName, int movementDiceValue)
 		for (int i = 0; i < poles_count; i++)
 		{
 			if ((players[playerName].currentFloor == poles[i].startFloor) && 
-				((players[playerName].currentLength - movementDiceValue) <= poles[i].length))
+				((poles[i].length >= (players[playerName].currentLength - movementDiceValue)) && (poles->length <= players[playerName].currentLength)) &&
+				(players[playerName].currentWidth == poles[i].width))
 			{
 				remainingMoves = movementDiceValue - (players[playerName].currentLength - poles[i].length) - 1;
 				players[playerName].currentFloor = poles[i].endFloor;
@@ -1245,7 +1249,7 @@ int play()
 	                    players[currentPlayer].currentWidth == flag->width && 
 	                    players[currentPlayer].currentLength == flag->length) {
 						
-	                    printf("\n*** GAME OVER! Player %c has captured the flag upon entering the maze! ***\n", playerName);
+	                    printf("\n*** GAME OVER! Player %c has captured the flag***\n", playerName);
 	                    gameOver = true;
 	                    break;
 	                }
@@ -1269,7 +1273,7 @@ int play()
 	                            players[currentPlayer].currentWidth == flag->width && 
 	                            players[currentPlayer].currentLength == flag->length) {
 								
-	                            printf("\n*** GAME OVER! Player %c has captured the flag after taking stairs! ***\n", playerName);
+	                            printf("\n*** GAME OVER! Player %c has captured the flag***\n", playerName);
 	                            gameOver = true;
 	                            break;
 	                        }
@@ -1283,7 +1287,8 @@ int play()
 	        }
 		
 	        // Player is in the maze - process movement
-	        if (players[currentPlayer].isEnteredGame) {
+	        if (players[currentPlayer].isEnteredGame) 
+			{
 	            players[currentPlayer].throwCount++;
 			
 	            // Store original position
