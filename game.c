@@ -129,27 +129,6 @@ void initBawana(Bawana **bawana){
 }
 
 
-//Logics of ground floor.
-void Floor0()
-{
-	//
-}
-
-
-//Logics of 1st floor.
-void Floor1(/*f1DisabledWidthStart, f1DisabledWidthEnd, f1DisabledLengthStart, f1DisabledLengthEnd*/)
-{
-	/*code*/
-}
-
-
-//Logics of 2nd floor.
-void Floor2(/*f2DisabledWidthStart, f2DisabledWidthEnd, f2DisabledLengthStart_1, f2DisabledLengthEnd_1, f2DisabledLengthStart_2, f2DisabledLengthEnd_2*/)
-{
-	/*code*/
-}
-
-
 //Floor map 
 void displayFloor() {
     
@@ -762,10 +741,7 @@ void capturedToStandingArea(int capturedPlayer)
 		//players[C].isPlayerActive = false;
 		printf("Player C has been moved to the starting area [%d,%d,%d]\n", players[C].currentFloor, players[C].currentWidth, players[C].currentLength);
 	}
-	//else
-	//{
-	//	return;
-	//}
+	
 }
 
 
@@ -1212,7 +1188,6 @@ int play()
 
 // Updated game loop implementation using your existing functions and header definitions
 // Replace the existing return 0; with this game loop
-
 	bool gameOver = false;
 	int gameRound = 1;
 	int foodPoisonTurns[MAX_PLAYERS] = {0, 0, 0}; // Track food poison turns for each player
