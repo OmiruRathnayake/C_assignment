@@ -1,0 +1,162 @@
+//check if there is a stair in the path(change the function if want, as an example to a stair struct pointer)
+//this function will also changes the "player position to -> stair end position"
+//and this returns the remaining moves
+int remainingMovesIfStairInPath(int playerName, int movementDiceValue)
+{
+	int direction = players[playerName].direction;
+	int remainingMoves = 0;
+	if (direction == NORTH)
+	{
+		for (int i = 0; i < stairs_count; i++)
+		{
+			if (((players[playerName].currentWidth - movementDiceValue) > 0 && (players[playerName].currentWidth - movementDiceValue) <= stairs[i].startWidth) && 
+				(players[playerName].currentLength == stairs[i].startLength) && 
+				(players[playerName].currentFloor == stairs[i].startFloor))
+			{
+				// Check if there are multiple stairs at the same start position
+				// manhatten distance method to find the closest stair to the flag  
+				int closestStair = i;
+				int minDistance = abs(stairs[i].endWidth - flag->width) + abs(stairs[i].endLength - flag->length);
+				
+				for (int j = i + 1; j < stairs_count; j++)
+				{
+					if ((stairs[j].startFloor == stairs[i].startFloor) && 
+						(stairs[j].startWidth == stairs[i].startWidth) && 
+						(stairs[j].startLength == stairs[i].startLength))
+					{
+						int distance = abs(stairs[j].endWidth - flag->width) + abs(stairs[j].endLength - flag->length);
+						if (distance < minDistance)
+						{
+							minDistance = distance;
+							closestStair = j;
+						}
+					}
+				}
+				
+				remainingMoves = movementDiceValue - (players[playerName].currentWidth - stairs[closestStair].startWidth) - 1;
+				players[playerName].currentFloor = stairs[closestStair].endFloor;
+				players[playerName].currentWidth = stairs[closestStair].endWidth;
+				players[playerName].currentLength = stairs[closestStair].endLength;
+				break;
+			}
+		}
+
+		return remainingMoves;
+		
+	}
+	else if (direction == EAST)
+	{
+		for (int i = 0; i < stairs_count; i++)
+		{
+			if (((players[playerName].currentLength + movementDiceValue) >= stairs[i].startLength && (players[playerName].currentLength + movementDiceValue) <= MAX_LENGTH) && 
+				(players[playerName].currentWidth == stairs[i].startWidth) && 
+				(players[playerName].currentFloor == stairs[i].startFloor))
+			{
+				// Check if there are multiple stairs at the same start position
+				int closestStair = i;
+				int minDistance = abs(stairs[i].endWidth - flag->width) + abs(stairs[i].endLength - flag->length);
+				
+				for (int j = i + 1; j < stairs_count; j++)
+				{
+					if ((stairs[j].startFloor == stairs[i].startFloor) && 
+						(stairs[j].startWidth == stairs[i].startWidth) && 
+						(stairs[j].startLength == stairs[i].startLength))
+					{
+						int distance = abs(stairs[j].endWidth - flag->width) + abs(stairs[j].endLength - flag->length);
+						if (distance < minDistance)
+						{
+							minDistance = distance;
+							closestStair = j;
+						}
+					}
+				}
+				
+				remainingMoves = movementDiceValue - (stairs[closestStair].startLength - players[playerName].currentLength) - 1;
+				players[playerName].currentFloor = stairs[closestStair].endFloor;
+				players[playerName].currentWidth = stairs[closestStair].endWidth;
+				players[playerName].currentLength = stairs[closestStair].endLength;
+				break;
+			}
+		}
+		
+		return remainingMoves;
+		
+	}
+	else if (direction == SOUTH)
+	{
+		for (int i = 0; i < stairs_count; i++)
+		{
+			if (((players[playerName].currentWidth + movementDiceValue) > 0 && (players[playerName].currentWidth + movementDiceValue) <= stairs[i].startWidth) && 
+				(players[playerName].currentLength == stairs[i].startLength) && 
+				(players[playerName].currentFloor == stairs[i].startFloor))
+			{
+				// Check if there are multiple stairs at the same start position
+				int closestStair = i;
+				int minDistance = abs(stairs[i].endWidth - flag->width) + abs(stairs[i].endLength - flag->length);
+				
+				for (int j = i + 1; j < stairs_count; j++)
+				{
+					if ((stairs[j].startFloor == stairs[i].startFloor) && 
+						(stairs[j].startWidth == stairs[i].startWidth) && 
+						(stairs[j].startLength == stairs[i].startLength))
+					{
+						int distance = abs(stairs[j].endWidth - flag->width) + abs(stairs[j].endLength - flag->length);
+						if (distance < minDistance)
+						{
+							minDistance = distance;
+							closestStair = j;
+						}
+					}
+				}
+				
+				remainingMoves = movementDiceValue - (stairs[closestStair].startWidth - players[playerName].currentWidth) - 1;
+				players[playerName].currentFloor = stairs[closestStair].endFloor;
+				players[playerName].currentWidth = stairs[closestStair].endWidth;
+				players[playerName].currentLength = stairs[closestStair].endLength;
+				break;
+			}
+		}
+
+		return remainingMoves;
+
+	}
+	else if (direction == WEST)
+	{
+		for (int i = 0; i < stairs_count; i++)
+		{
+			if (((players[playerName].currentLength - movementDiceValue) >= stairs[i].startLength && (players[playerName].currentLength - movementDiceValue) <= MAX_LENGTH) && 
+				(players[playerName].currentWidth == stairs[i].startWidth) && 
+				(players[playerName].currentFloor == stairs[i].startFloor))
+			{
+				// Check if there are multiple stairs at the same start position
+				int closestStair = i;
+				int minDistance = abs(stairs[i].endWidth - flag->width) + abs(stairs[i].endLength - flag->length);
+				
+				for (int j = i + 1; j < stairs_count; j++)
+				{
+					if ((stairs[j].startFloor == stairs[i].startFloor) && 
+						(stairs[j].startWidth == stairs[i].startWidth) && 
+						(stairs[j].startLength == stairs[i].startLength))
+					{
+						int distance = abs(stairs[j].endWidth - flag->width) + abs(stairs[j].endLength - flag->length);
+						if (distance < minDistance)
+						{
+							minDistance = distance;
+							closestStair = j;
+						}
+					}
+				}
+				
+				remainingMoves = movementDiceValue - (players[playerName].currentLength - stairs[closestStair].startLength) - 1;
+				players[playerName].currentFloor = stairs[closestStair].endFloor;
+				players[playerName].currentWidth = stairs[closestStair].endWidth;
+				players[playerName].currentLength = stairs[closestStair].endLength;
+				break;
+			}
+		}
+
+		return remainingMoves;
+		
+	}
+
+}
