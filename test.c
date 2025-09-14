@@ -3,14 +3,18 @@
 #include <time.h>
 #include "rand_utils.h"
 
+FILE *filex(){
+	FILE *fptr;
+	fptr = fopen("test.txt", "w");
+	return fptr;
+}
 int main()
 {
-    srand(time(NULL));
-
-    int r = rand_int_0_6();
-    printf("%d\n", r);
-
-    return 0;
+    FILE *fptrx = filex();
+	fprintf(fptrx, "Hello");
+	fprintf(fptrx, "\nWorld!");
+	fclose(fptrx);
+}
     /*
     FILE *fptr;
     fptr = fopen("test.txt", "r");
@@ -29,7 +33,7 @@ int main()
 
     fclose(fptr);
     */
-}
+//}
 
 /*
 	FILE *entr;
